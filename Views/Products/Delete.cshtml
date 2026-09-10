@@ -1,10 +1,40 @@
-﻿@model proyecto_asp.Models.Product
-<h2>¿Eliminar este producto?</h2>
-<h4>@Model.Name</h4>
-<p>@Model.Description</p>
-<p><strong>Precio:</strong> @Model.Price.ToString("C")</p>
-<form asp-action="Delete" method="post">
-    <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
-    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancelar</a>
-</form>
+@model proyecto_asp.Models.Product
+
+@{
+    ViewData["Title"] = "Eliminar " + Model.Name + " - Empanadas Pamelita";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card-pamelita-form border-danger">
+                <div class="text-center mb-4">
+                    <span class="fs-1 text-danger">⚠️</span>
+                    <h2 class="fw-bold text-danger">¿Eliminar esta empanada?</h2>
+                    <p class="text-muted">Esta acción no se puede deshacer.</p>
+                </div>
+
+                <div class="p-3 bg-light rounded-3 mb-4">
+                    <h4 class="fw-bold text-dark">@Model.Name</h4>
+                    <p class="text-muted mb-2">@Model.Description</p>
+                    <div class="d-flex justify-content-between font-monospace">
+                        <span>Precio: <strong>Bs. @Model.Price.ToString("F2")</strong></span>
+                        <span>Stock: <strong>@Model.Stock unids</strong></span>
+                    </div>
+                </div>
+
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex gap-2">
+                        <a href="@Url.Action("Index")" class="btn btn-pamelita-secondary flex-grow-1 text-center">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-pamelita-danger flex-grow-1">
+                            <i class="bi bi-trash me-1"></i> Sí, Eliminar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

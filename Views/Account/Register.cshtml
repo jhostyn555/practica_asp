@@ -1,33 +1,67 @@
-﻿@model proyecto_asp.Models.RegisterViewModel
-<h2>Registro</h2>
-<form asp-action="Register" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="form-group mb-2">
-        <label asp-for="FullName"></label>
-        <input asp-for="FullName" class="form-control" />
-        <span asp-validation-for="FullName" class="text-danger"></span>
+@model proyecto_asp.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Registro - Empanadas Pamelita";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="card-pamelita-form">
+                <div class="text-center mb-4">
+                    <span class="display-3">🥐</span>
+                    <h2 class="fw-extrabold text-dark mb-1">Crea tu Cuenta</h2>
+                    <p class="text-muted small">Únete a la familia de Empanadas Pamelita</p>
+                </div>
+
+                <form asp-action="Register" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="FullName" class="form-label fw-bold">Nombre Completo</label>
+                        <input asp-for="FullName" class="form-control form-control-pamelita" placeholder="Nombre y Apellido" />
+                        <span asp-validation-for="FullName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Email" class="form-label fw-bold">Correo Electrónico</label>
+                        <input asp-for="Email" class="form-control form-control-pamelita" placeholder="ejemplo@correo.com" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Password" class="form-label fw-bold">Contraseña</label>
+                            <input asp-for="Password" class="form-control form-control-pamelita" type="password" placeholder="••••••••" />
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ConfirmPassword" class="form-label fw-bold">Confirmar Contraseña</label>
+                            <input asp-for="ConfirmPassword" class="form-control form-control-pamelita" type="password" placeholder="••••••••" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="Address" class="form-label fw-bold">Dirección de Entrega</label>
+                        <input asp-for="Address" class="form-control form-control-pamelita" placeholder="Calle / Av. y Número" />
+                        <span asp-validation-for="Address" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-pamelita-primary w-100 mb-3">
+                        <i class="bi bi-person-check me-1"></i> Registrarse Ahora
+                    </button>
+
+                    <div class="text-center pt-2 border-top">
+                        <span class="text-muted small">¿Ya tienes cuenta?</span>
+                        <a href="@Url.Action("Login")" class="text-warning fw-bold text-decoration-none ms-1">Inicia sesión</a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="form-group mb-2">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group mb-2">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group mb-2">
-        <label asp-for="ConfirmPassword"></label>
-        <input asp-for="ConfirmPassword" class="form-control" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-    </div>
-    <div class="form-group mb-2">
-        <label asp-for="Address"></label>
-        <input asp-for="Address" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Registrarse</button>
-</form>
+</div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

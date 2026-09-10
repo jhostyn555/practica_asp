@@ -1,27 +1,106 @@
-﻿@model List<proyecto_asp.Models.Product>
-<h2>Productos</h2>
-@if (User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
-{
-    <a href="@Url.Action("Create")" class="btn btn-primary mb-3">Crear Producto</a>
+@model List<proyecto_asp.Models.Product>
+
+@{
+    ViewData["Title"] = "Menú de Empanadas";
 }
-<div class="row">
-    @foreach (var product in Model)
+
+<!-- Hero Banner Pamelita -->
+<div class="hero-pamelita">
+    <div class="row align-items-center">
+        <div class="col-lg-8">
+            <span class="badge bg-warning text-dark fw-bold px-3 py-2 rounded-pill mb-3">
+                <i class="bi bi-star-fill text-danger me-1"></i> Tradición & Sabor Único
+            </span>
+            <h1 class="hero-title">
+                Las Verdaderas <span class="hero-highlight">Empanadas Pamelita</span>
+            </h1>
+            <p class="hero-subtitle">
+                Doraditas, crujientes y con el relleno más jugoso. Preparadas diariamente con ingredientes seleccionados y amor artesanal.
+            </p>
+            <a href="#menu-seccion" class="btn btn-pamelita-primary btn-lg">
+                <i class="bi bi-cart-plus me-2"></i> Explora Nuestro Menú
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Barra de Acción y Filtros -->
+<div id="menu-seccion" class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h2 class="fw-extrabold m-0 text-dark">
+            <i class="bi bi-fire text-warning me-2"></i>Nuestras Empanadas Destacadas
+        </h2>
+        <p class="text-muted small m-0">Selecciona tu empanada favorita recién horneada</p>
+    </div>
+
+    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
     {
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <img src="@(product.ImageUrl ?? "/images/default-product.jpg")" class="card-img-top" alt="@product.Name" />
-                <div class="card-body">
-                    <h5 class="card-title">@product.Name</h5>
-                    <p class="card-text">@product.Description</p>
-                    <p class="card-text"><strong>Precio:</strong> @product.Price.ToString("C")</p>
-                    <p class="card-text"><strong>Stock:</strong> @product.Stock</p>
-                    <a href="@Url.Action("Details", new { id = product.Id })" class="btn btn-info">Ver</a>
-                    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
-                    {
-                        <a href="@Url.Action("Edit", new { id = product.Id })" class="btn btn-warning">Editar</a>
-                        <a href="@Url.Action("Delete", new { id = product.Id })" class="btn btn-danger">Eliminar</a>
-                    }
+        <a href="@Url.Action("Create")" class="btn btn-pamelita-primary">
+            <i class="bi bi-plus-circle me-1"></i> Nuevo Producto (Admin)
+        </a>
+    }
+</div>
+
+<!-- Grilla de Productos -->
+<div class="row g-4">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var product in Model)
+        {
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600" : product.ImageUrl)" 
+                             class="product-img" 
+                             alt="@product.Name" 
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600';" />
+                        
+                        <span class="category-badge">
+                            @(string.IsNullOrEmpty(product.Category) ? "Empanada" : product.Category)
+                        </span>
+
+                        <span class="price-pill">
+                            Bs. @product.Price.ToString("F2")
+                        </span>
+                    </div>
+
+                    <div class="product-card-body">
+                        <h3 class="product-title">@product.Name</h3>
+                        <p class="product-desc">@product.Description</p>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="stock-indicator">
+                                <i class="bi bi-box-seam"></i> Stock: @product.Stock unids
+                            </span>
+                        </div>
+
+                        <div class="d-flex gap-2 mt-auto">
+                            <a href="@Url.Action("Details", new { id = product.Id })" class="btn btn-pamelita-secondary flex-grow-1 text-center">
+                                <i class="bi bi-eye me-1"></i> Ver Detalle
+                            </a>
+
+                            @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
+                            {
+                                <a href="@Url.Action("Edit", new { id = product.Id })" class="btn btn-pamelita-warning btn-sm d-flex align-items-center" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="@Url.Action("Delete", new { id = product.Id })" class="btn btn-pamelita-danger btn-sm d-flex align-items-center" title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            }
+                        </div>
+                    </div>
                 </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12 text-center py-5">
+            <div class="p-5 bg-white rounded-3 border border-warning shadow-sm">
+                <i class="bi bi-emoji-frown display-4 text-warning mb-3"></i>
+                <h3>No hay empanadas disponibles en este momento.</h3>
+                <p class="text-muted">Por favor, vuelve a intentar más tarde o agrega nuevos productos.</p>
             </div>
         </div>
     }

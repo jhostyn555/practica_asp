@@ -1,25 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
-using proyecto_asp.Models;
-using System.Diagnostics;
+using proyecto_asp.Data;
 
-namespace proyecto_asp.Controllers
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly ApplicationDbContext _context;
+
+    public HomeController(ApplicationDbContext context)
     {
-        public IActionResult Index()
+        _context = context;
+    }
+
+    public IActionResult Index()
+    {
+        try
         {
-            return View();
+            // Intenta realizar una consulta ligera
+            bool canConnect = _context.Database.CanConnect();
+
+            if (canConnect)
+            {
+                // Consulta los productos para confirmar la lectura de datos
+                var productos = _context.Products.ToList();
+                ViewBag.Status = $"Conexión exitosa. Se encontraron {productos.Count} productos.";
+            }
+            else
+            {
+                ViewBag.Status = "No se pudo conectar a la base de datos.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ViewBag.Status = $"Error de conexión: {ex.Message}";
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        return View();
     }
 }

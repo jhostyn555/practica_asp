@@ -112,7 +112,6 @@ D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\obj\Debug\net10.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\obj\Debug\net10.0\scopedcss\bundle\proyecto_asp.styles.css
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\obj\Debug\net10.0\scopedcss\projectbundle\proyecto_asp.bundle.scp.css
-D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\obj\Debug\net10.0\compressed\25ot0mlgc1-{0}-b9sayid5wm-b9sayid5wm.gz
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\obj\Debug\net10.0\compressed\ayj2aq52xz-{0}-61n19gt1b8-61n19gt1b8.gz
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\obj\Debug\net10.0\compressed\ebz79irars-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\obj\Debug\net10.0\compressed\5wll1chhe1-{0}-bqjiyaj88i-bqjiyaj88i.gz
@@ -187,4 +186,6 @@ D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\obj\Debug\net10.0\proyecto_asp.pdb
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\obj\Debug\net10.0\proyecto_asp.genruntimeconfig.cache
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\obj\Debug\net10.0\ref\proyecto_asp.dll
+D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\obj\Debug\net10.0\proyecto_asp.sourcelink.json
+D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\obj\Debug\net10.0\compressed\25ot0mlgc1-{0}-xomsxcvv77-xomsxcvv77.gz
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

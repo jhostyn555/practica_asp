@@ -1,9 +1,8 @@
-﻿using proyecto_asp.Data;
+using proyecto_asp.Data;
 using proyecto_asp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using proyecto_asp.Models;
 
 namespace proyecto_asp.Controllers
 {
