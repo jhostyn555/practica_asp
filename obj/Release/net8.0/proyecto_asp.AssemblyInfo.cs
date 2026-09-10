@@ -12,9 +12,9 @@ using System;
 using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("proyecto_asp")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16c357082ab6f3676dbcbbf0d28c688e1f1cbb50")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8cb2848f3f7685c201f53fc7a2200041a97b6da0")]
 [assembly: System.Reflection.AssemblyProductAttribute("proyecto_asp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("proyecto_asp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
