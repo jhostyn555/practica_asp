@@ -1,0 +1,88 @@
+@{
+    ViewData["Title"] = "Panel de Administración";
+}
+
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold"><i class="bi bi-speedometer2 text-warning"></i> Dashboard Admin</h2>
+        <a asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver a la tienda
+        </a>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 border-start border-5 border-success h-100">
+                <div class="card-body">
+                    <h5 class="text-muted mb-2">Ingresos Totales</h5>
+                    <h3 class="fw-bold text-success">Bs. @ViewBag.Ingresos?.ToString("F2")</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 border-start border-5 border-danger h-100">
+                <div class="card-body">
+                    <h5 class="text-muted mb-2">Egresos Totales</h5>
+                    <h3 class="fw-bold text-danger">Bs. @ViewBag.Egresos?.ToString("F2")</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 border-start border-5 border-primary h-100">
+                <div class="card-body">
+                    <h5 class="text-muted mb-2">Balance General</h5>
+                    <h3 class="fw-bold text-primary">Bs. @ViewBag.Balance?.ToString("F2")</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white pb-0 border-0">
+                    <h5 class="fw-bold"><i class="bi bi-exclamation-triangle text-warning"></i> Alertas de Stock</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.BajoStock != null && ((IEnumerable<dynamic>)ViewBag.BajoStock).Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var item in ViewBag.BajoStock)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <span>@item.Name</span>
+                                    <span class="badge bg-danger rounded-pill">Stock: @item.Stock</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted p-3">
+                            <i class="bi bi-check-circle fs-3 text-success mb-2 d-block"></i>
+                            Todo el inventario está en niveles óptimos.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white pb-0 border-0">
+                    <h5 class="fw-bold"><i class="bi bi-tools text-secondary"></i> Accesos Rápidos</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Products" asp-action="Create" class="btn btn-pamelita-primary text-start">
+                            <i class="bi bi-plus-circle me-2"></i> Añadir Nuevo Producto
+                        </a>
+                        <a asp-controller="Admin" asp-action="Proveedores" class="btn btn-outline-secondary text-start">
+                            <i class="bi bi-truck me-2"></i> Gestión de Proveedores
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

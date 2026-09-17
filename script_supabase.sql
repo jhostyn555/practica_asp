@@ -109,3 +109,56 @@ CREATE UNIQUE INDEX IF NOT EXISTS "UserNameIndex" ON "AspNetUsers" ("NormalizedU
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
 VALUES ('20260909235430_InitialCreate', '10.0.12')
 ON CONFLICT ("MigrationId") DO NOTHING;
+
+-- ==========================================
+-- CREACIÓN DE ADMINISTRADOR POR DEFECTO
+-- ==========================================
+
+-- 1. Crear el Rol de Administrador
+INSERT INTO "AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp")
+VALUES ('role-admin-001', 'Administrador', 'ADMINISTRADOR', gen_random_uuid()::text)
+ON CONFLICT ("Id") DO NOTHING;
+
+-- 2. Crear el Usuario Administrador
+-- Contraseña por defecto: Admin123!
+-- (Nota: Este hash es de ejemplo para 'Admin123!', generado por ASP.NET Core Identity V3)
+INSERT INTO "AspNetUsers" (
+    "Id", 
+    "FullName", 
+    "CreatedAt", 
+    "UserName", 
+    "NormalizedUserName", 
+    "Email", 
+    "NormalizedEmail", 
+    "EmailConfirmed", 
+    "PasswordHash", 
+    "SecurityStamp", 
+    "ConcurrencyStamp", 
+    "PhoneNumberConfirmed", 
+    "TwoFactorEnabled", 
+    "LockoutEnabled", 
+    "AccessFailedCount"
+)
+VALUES (
+    'user-admin-001',
+    'Administrador Principal',
+    CURRENT_TIMESTAMP,
+    'admin@tudominio.com',
+    'ADMIN@TUDOMINIO.COM',
+    'admin@tudominio.com',
+    'ADMIN@TUDOMINIO.COM',
+    true,
+    'AQAAAAIAAYagAAAAEOx1w9LwSjV9m+ZgYvG0+7Qc0q7Wz8X+Z9eU2xL+Q2y9M3XbO9bM2Lq1Q8g3d2JvWg==', -- Hash para 'Admin123!'
+    gen_random_uuid()::text,
+    gen_random_uuid()::text,
+    false,
+    false,
+    true,
+    0
+) 
+ON CONFLICT ("Id") DO NOTHING;
+
+-- 3. Asignar el Rol al Usuario
+INSERT INTO "AspNetUserRoles" ("UserId", "RoleId")
+VALUES ('user-admin-001', 'role-admin-001')
+ON CONFLICT ("UserId", "RoleId") DO NOTHING;

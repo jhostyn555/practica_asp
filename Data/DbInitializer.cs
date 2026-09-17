@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using proyecto_asp.Models;
 
 namespace proyecto_asp.Data
@@ -8,7 +9,7 @@ namespace proyecto_asp.Data
     {
         public static void Initialize(ApplicationDbContext context)
         {
-            context.Database.EnsureCreated();
+            context.Database.Migrate();
 
             // Verificar si ya existen productos para no duplicar excesivamente
             if (!context.Products.Any())
@@ -48,7 +49,7 @@ namespace proyecto_asp.Data
                 };
 
                 context.Products.AddRange(products);
-                context.SaveChangesAsync();
+                context.SaveChanges();
             }
             else
             {

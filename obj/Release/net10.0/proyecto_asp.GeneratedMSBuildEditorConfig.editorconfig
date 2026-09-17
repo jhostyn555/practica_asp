@@ -38,6 +38,34 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Users/Vargas/source/repos/DESARROLLO DE SISTEMAS I/proyecto_asp/proyecto_asp/Views/Admin/CrearProveedor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXJQcm92ZWVkb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Users/Vargas/source/repos/DESARROLLO DE SISTEMAS I/proyecto_asp/proyecto_asp/Views/Admin/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Users/Vargas/source/repos/DESARROLLO DE SISTEMAS I/proyecto_asp/proyecto_asp/Views/Admin/Proveedores.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUHJvdmVlZG9yZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Users/Vargas/source/repos/DESARROLLO DE SISTEMAS I/proyecto_asp/proyecto_asp/Views/Cart/Checkout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxDaGVja291dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Users/Vargas/source/repos/DESARROLLO DE SISTEMAS I/proyecto_asp/proyecto_asp/Views/Cart/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Users/Vargas/source/repos/DESARROLLO DE SISTEMAS I/proyecto_asp/proyecto_asp/Views/Cart/OrderConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxPcmRlckNvbmZpcm1hdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Users/Vargas/source/repos/DESARROLLO DE SISTEMAS I/proyecto_asp/proyecto_asp/Views/Contacto/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFjdG9cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Users/Vargas/source/repos/DESARROLLO DE SISTEMAS I/proyecto_asp/proyecto_asp/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

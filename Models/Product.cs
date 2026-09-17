@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace proyecto_asp.Models
 {
@@ -18,6 +18,9 @@ namespace proyecto_asp.Models
 
         [Required, Range(0, int.MaxValue)]
         public int Stock { get; set; }
+
+        [Required, Range(0, int.MaxValue)]
+        public int StockMinimo { get; set; } = 5;
 
         public string? ImageUrl { get; set; }
         public string? Category { get; set; }

@@ -11,9 +11,23 @@ namespace proyecto_asp.Controllers
     public class ProductsController(ApplicationDbContext context) : Controller
     {
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchQuery, string categoria)
         {
-            var products = await context.Products.AsNoTracking().ToListAsync();
+            var query = context.Products.AsNoTracking().AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                query = query.Where(p => p.Name.Contains(searchQuery) || p.Description.Contains(searchQuery));
+                ViewBag.SearchQuery = searchQuery;
+            }
+
+            if (!string.IsNullOrEmpty(categoria))
+            {
+                query = query.Where(p => p.Category == categoria);
+                ViewBag.Categoria = categoria;
+            }
+
+            var products = await query.ToListAsync();
             return View(products);
         }
 

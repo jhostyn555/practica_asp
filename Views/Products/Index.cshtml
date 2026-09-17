@@ -1,7 +1,7 @@
 @model List<proyecto_asp.Models.Product>
 
 @{
-    ViewData["Title"] = "Menú de Empanadas";
+    ViewData["Title"] = "Inicio";
 }
 
 <!-- Hero Banner Pamelita -->
@@ -17,91 +17,189 @@
             <p class="hero-subtitle">
                 Doraditas, crujientes y con el relleno más jugoso. Preparadas diariamente con ingredientes seleccionados y amor artesanal.
             </p>
-            <a href="#menu-seccion" class="btn btn-pamelita-primary btn-lg">
-                <i class="bi bi-cart-plus me-2"></i> Explora Nuestro Menú
-            </a>
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="#menu-seccion" class="btn btn-pamelita-primary btn-lg">
+                    <i class="bi bi-cart-plus me-2"></i> Hacer Pedido
+                </a>
+                <a href="#ventajas" class="btn btn-pamelita-secondary btn-lg">
+                    <i class="bi bi-shop me-2"></i> Nuestras Especialidades
+                </a>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Barra de Acción y Filtros -->
-<div id="menu-seccion" class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
-    <div>
-        <h2 class="fw-extrabold m-0 text-dark">
-            <i class="bi bi-fire text-warning me-2"></i>Nuestras Empanadas Destacadas
-        </h2>
-        <p class="text-muted small m-0">Selecciona tu empanada favorita recién horneada</p>
-    </div>
-
-    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
-    {
-        <a href="@Url.Action("Create")" class="btn btn-pamelita-primary">
-            <i class="bi bi-plus-circle me-1"></i> Nuevo Producto (Admin)
-        </a>
-    }
-</div>
-
-<!-- Grilla de Productos -->
-<div class="row g-4">
-    @if (Model != null && Model.Any())
-    {
-        foreach (var product in Model)
-        {
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="product-card">
-                    <div class="product-img-wrapper">
-                        <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600" : product.ImageUrl)" 
-                             class="product-img" 
-                             alt="@product.Name" 
-                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600';" />
-                        
-                        <span class="category-badge">
-                            @(string.IsNullOrEmpty(product.Category) ? "Empanada" : product.Category)
-                        </span>
-
-                        <span class="price-pill">
-                            Bs. @product.Price.ToString("F2")
-                        </span>
-                    </div>
-
-                    <div class="product-card-body">
-                        <h3 class="product-title">@product.Name</h3>
-                        <p class="product-desc">@product.Description</p>
-
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="stock-indicator">
-                                <i class="bi bi-box-seam"></i> Stock: @product.Stock unids
-                            </span>
-                        </div>
-
-                        <div class="d-flex gap-2 mt-auto">
-                            <a href="@Url.Action("Details", new { id = product.Id })" class="btn btn-pamelita-secondary flex-grow-1 text-center">
-                                <i class="bi bi-eye me-1"></i> Ver Detalle
-                            </a>
-
-                            @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
-                            {
-                                <a href="@Url.Action("Edit", new { id = product.Id })" class="btn btn-pamelita-warning btn-sm d-flex align-items-center" title="Editar">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <a href="@Url.Action("Delete", new { id = product.Id })" class="btn btn-pamelita-danger btn-sm d-flex align-items-center" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            }
-                        </div>
-                    </div>
+<!-- ¿Por qué elegirnos? -->
+<section class="py-5 bg-light" id="ventajas">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-4 text-dark">¿Por qué elegirnos?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm p-4">
+                    <div class="text-warning display-4 mb-3"><i class="bi bi-fire"></i></div>
+                    <h4>Sabor Inigualable</h4>
+                    <p class="text-muted">Recetas tradicionales que mantienen el toque casero en cada mordisco.</p>
                 </div>
             </div>
-        }
-    }
-    else
-    {
-        <div class="col-12 text-center py-5">
-            <div class="p-5 bg-white rounded-3 border border-warning shadow-sm">
-                <i class="bi bi-emoji-frown display-4 text-warning mb-3"></i>
-                <h3>No hay empanadas disponibles en este momento.</h3>
-                <p class="text-muted">Por favor, vuelve a intentar más tarde o agrega nuevos productos.</p>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm p-4">
+                    <div class="text-warning display-4 mb-3"><i class="bi bi-clock-history"></i></div>
+                    <h4>Frescura Garantizada</h4>
+                    <p class="text-muted">Horneadas diariamente para asegurar la mejor calidad y textura.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm p-4">
+                    <div class="text-warning display-4 mb-3"><i class="bi bi-award"></i></div>
+                    <h4>Calidad Premium</h4>
+                    <p class="text-muted">Ingredientes seleccionados de la más alta calidad.</p>
+                </div>
             </div>
         </div>
-    }
-</div>
+    </div>
+</section>
+
+<!-- Quiénes somos -->
+<section class="py-5" id="quienes-somos">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <img src="https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=600" class="img-fluid rounded shadow" alt="Nuestra Historia" />
+            </div>
+            <div class="col-md-6">
+                <h2 class="fw-bold text-dark mb-3">Quiénes Somos</h2>
+                <p class="lead text-muted">Una familia dedicada a llevar el mejor sabor a tu mesa.</p>
+                <p>Nuestra misión en Empanadas Pamelita es ofrecerte una experiencia culinaria única, basada en recetas tradicionales y el amor por la buena comida. Nos enorgullece ser parte de tus momentos especiales, brindándote un producto hecho con dedicación y los mejores ingredientes.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Nuestras Especialidades -->
+<section class="py-5 bg-light" id="menu-seccion">
+    <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+            <div>
+                <h2 class="fw-extrabold m-0 text-dark">
+                    <i class="bi bi-star text-warning me-2"></i>Nuestras Especialidades
+                </h2>
+                <p class="text-muted small m-0">Selecciona tu empanada favorita recién horneada</p>
+            </div>
+
+            @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
+            {
+                <a href="@Url.Action("Create")" class="btn btn-pamelita-primary">
+                    <i class="bi bi-plus-circle me-1"></i> Nuevo Producto (Admin)
+                </a>
+            }
+        </div>
+
+        <div class="row g-4">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var product in Model)
+                {
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="product-card">
+                            <div class="product-img-wrapper">
+                                <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600" : product.ImageUrl)" 
+                                     class="product-img" 
+                                     alt="@product.Name" 
+                                     onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600';" />
+                                
+                                <span class="category-badge">
+                                    @(string.IsNullOrEmpty(product.Category) ? "Empanada" : product.Category)
+                                </span>
+
+                                <span class="price-pill">
+                                    Bs. @product.Price.ToString("F2")
+                                </span>
+                            </div>
+
+                            <div class="product-card-body">
+                                <h3 class="product-title">@product.Name</h3>
+                                <p class="product-desc">@product.Description</p>
+
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="stock-indicator">
+                                        <i class="bi bi-box-seam"></i> Stock: @product.Stock unids
+                                    </span>
+                                </div>
+
+                                <div class="d-flex gap-2 mt-auto">
+                                    <form asp-controller="Cart" asp-action="Add" method="post" class="flex-grow-1">
+                                        <input type="hidden" name="productId" value="@product.Id" />
+                                        <button type="submit" class="btn btn-pamelita-primary w-100">
+                                            <i class="bi bi-cart-plus me-1"></i> Añadir
+                                        </button>
+                                    </form>
+                                    <a href="@Url.Action("Details", new { id = product.Id })" class="btn btn-pamelita-secondary text-center" title="Ver Detalle">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+
+                                    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
+                                    {
+                                        <a href="@Url.Action("Edit", new { id = product.Id })" class="btn btn-pamelita-warning btn-sm d-flex align-items-center" title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id = product.Id })" class="btn btn-pamelita-danger btn-sm d-flex align-items-center" title="Eliminar">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center py-5">
+                    <div class="p-5 bg-white rounded-3 border border-warning shadow-sm">
+                        <i class="bi bi-emoji-frown display-4 text-warning mb-3"></i>
+                        <h3>No hay empanadas disponibles en este momento.</h3>
+                        <p class="text-muted">Por favor, vuelve a intentar más tarde o agrega nuevos productos.</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Testimonios -->
+<section class="py-5" id="testimonios">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-4 text-dark">Lo que dicen nuestros clientes</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4">
+                    <div class="text-warning mb-2">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>
+                    <p>"Las mejores empanadas de la ciudad, siempre frescas y con mucho relleno. ¡Totalmente recomendadas!"</p>
+                    <small class="fw-bold">- Carlos M.</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4">
+                    <div class="text-warning mb-2">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+                    </div>
+                    <p>"Me encanta la atención y el sabor único. Ideal para compartir en familia los fines de semana."</p>
+                    <small class="fw-bold">- Andrea V.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contacto Rapido -->
+<section class="py-5 bg-dark text-white" id="contacto">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-4">¿Tienes alguna duda o pedido especial?</h2>
+        <p class="mb-4">Contáctanos fácilmente para pedidos grandes o información.</p>
+        <a href="@Url.Action("Index", "Contacto")" class="btn btn-warning btn-lg fw-bold text-dark">
+            <i class="bi bi-envelope me-2"></i> Ir a Contacto
+        </a>
+    </div>
+</section>

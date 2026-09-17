@@ -1,0 +1,58 @@
+@model IEnumerable<proyecto_asp.Models.Proveedor>
+
+@{
+    ViewData["Title"] = "Gestión de Proveedores";
+}
+
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold"><i class="bi bi-truck text-secondary"></i> Proveedores</h2>
+        <div>
+            <a asp-action="CrearProveedor" class="btn btn-pamelita-primary">
+                <i class="bi bi-plus-circle"></i> Nuevo Proveedor
+            </a>
+            <a asp-action="Dashboard" class="btn btn-outline-secondary ms-2">
+                <i class="bi bi-arrow-left"></i> Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Contacto</th>
+                                <th>Teléfono</th>
+                                <th>Dirección</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="fw-bold">@item.Nombre</td>
+                                    <td>@item.Contacto</td>
+                                    <td>@item.Telefono</td>
+                                    <td>@item.Direccion</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-emoji-frown display-4 text-muted mb-3"></i>
+                    <h4>No hay proveedores registrados</h4>
+                    <p class="text-muted">Añade tu primer proveedor para gestionar tus compras.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

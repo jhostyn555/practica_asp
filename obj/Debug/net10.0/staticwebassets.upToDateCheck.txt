@@ -61,6 +61,8 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\manifest.json
+wwwroot\sw.js
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\wwwroot\css\site.css
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\wwwroot\favicon.ico
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\wwwroot\js\site.js
@@ -123,3 +125,5 @@ D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\wwwroot\lib\jquery\dist\jquery.slim.min.js
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\wwwroot\lib\jquery\dist\jquery.slim.min.map
 D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\wwwroot\lib\jquery\LICENSE.txt
+D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\wwwroot\manifest.json
+D:\Users\Vargas\source\repos\DESARROLLO DE SISTEMAS I\proyecto_asp\proyecto_asp\wwwroot\sw.js
