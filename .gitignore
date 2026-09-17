@@ -1,0 +1,12 @@
+# Excluir credenciales y configuraciones locales
+appsettings.json
+appsettings.Development.json
+
+# Excluir archivos compilados y temporales
+bin/
+obj/
+.vs/
+*.user
+
+# Excluir claves de compilación
+*.pfx
