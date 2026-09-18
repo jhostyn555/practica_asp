@@ -64,7 +64,7 @@ namespace proyecto_asp.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Products");
         }
     }
 }

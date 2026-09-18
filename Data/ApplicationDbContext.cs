@@ -19,6 +19,7 @@ namespace proyecto_asp.Data
         public DbSet<Opinion> Opiniones { get; set; }
         public DbSet<Contacto> Contactos { get; set; }
         public DbSet<MovimientoFinanciero> MovimientosFinancieros { get; set; }
+        public DbSet<Insumo> Insumos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

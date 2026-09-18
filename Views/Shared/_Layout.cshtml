@@ -57,7 +57,11 @@
                                 </span>
                             </a>
                         </li>
-                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        @using Microsoft.AspNetCore.Identity
+                        @using proyecto_asp.Models
+                        @inject SignInManager<ApplicationUser> SignInManager
+
+                        @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
                                 <span class="user-badge">

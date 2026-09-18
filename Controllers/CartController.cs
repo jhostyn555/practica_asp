@@ -118,7 +118,31 @@ namespace proyecto_asp.Controllers
             _context.Pedidos.Add(pedido);
             await _context.SaveChangesAsync();
 
-            // Clear cart
+            // Descontar stock de cada producto vendido
+            foreach (var item in cart)
+            {
+                var producto = await _context.Products.FindAsync(item.ProductId);
+                if (producto != null)
+                {
+                    producto.Stock -= item.Quantity;
+                    _context.Products.Update(producto);
+                }
+            }
+
+            // Registrar el movimiento financiero de ingreso
+            var ingreso = new MovimientoFinanciero
+            {
+                Tipo = "Ingreso",
+                Descripcion = $"Venta online — Pedido #{pedido.Id}",
+                Monto = pedido.Total,
+                Fecha = DateTime.UtcNow,
+                ReferenciaId = pedido.Id,
+                EntidadReferencia = "Pedido"
+            };
+            _context.MovimientosFinancieros.Add(ingreso);
+            await _context.SaveChangesAsync();
+
+            // Limpiar carrito
             HttpContext.Session.Remove(CartSessionKey);
 
             return RedirectToAction("OrderConfirmation", new { id = pedido.Id });

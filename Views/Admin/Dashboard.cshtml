@@ -1,88 +1,245 @@
 @{
     ViewData["Title"] = "Panel de Administración";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="container my-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold"><i class="bi bi-speedometer2 text-warning"></i> Dashboard Admin</h2>
-        <a asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Volver a la tienda
-        </a>
-    </div>
+@* Fila superior: tarjetas de métricas *@
+<div class="row g-3 mb-4">
 
-    <div class="row g-4 mb-5">
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 border-start border-5 border-success h-100">
-                <div class="card-body">
-                    <h5 class="text-muted mb-2">Ingresos Totales</h5>
-                    <h3 class="fw-bold text-success">Bs. @ViewBag.Ingresos?.ToString("F2")</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 border-start border-5 border-danger h-100">
-                <div class="card-body">
-                    <h5 class="text-muted mb-2">Egresos Totales</h5>
-                    <h3 class="fw-bold text-danger">Bs. @ViewBag.Egresos?.ToString("F2")</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 border-start border-5 border-primary h-100">
-                <div class="card-body">
-                    <h5 class="text-muted mb-2">Balance General</h5>
-                    <h3 class="fw-bold text-primary">Bs. @ViewBag.Balance?.ToString("F2")</h3>
-                </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100 border-start border-5 border-success">
+            <div class="card-body">
+                <p class="text-muted small mb-1">Ingresos Totales</p>
+                <h4 class="fw-bold text-success mb-0">Bs. @ViewBag.Ingresos?.ToString("F2")</h4>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-header bg-white pb-0 border-0">
-                    <h5 class="fw-bold"><i class="bi bi-exclamation-triangle text-warning"></i> Alertas de Stock</h5>
-                </div>
-                <div class="card-body">
-                    @if (ViewBag.BajoStock != null && ((IEnumerable<dynamic>)ViewBag.BajoStock).Any())
-                    {
-                        <ul class="list-group list-group-flush">
-                            @foreach (var item in ViewBag.BajoStock)
-                            {
-                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                    <span>@item.Name</span>
-                                    <span class="badge bg-danger rounded-pill">Stock: @item.Stock</span>
-                                </li>
-                            }
-                        </ul>
-                    }
-                    else
-                    {
-                        <div class="text-center text-muted p-3">
-                            <i class="bi bi-check-circle fs-3 text-success mb-2 d-block"></i>
-                            Todo el inventario está en niveles óptimos.
-                        </div>
-                    }
-                </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100 border-start border-5 border-danger">
+            <div class="card-body">
+                <p class="text-muted small mb-1">Egresos Totales</p>
+                <h4 class="fw-bold text-danger mb-0">Bs. @ViewBag.Egresos?.ToString("F2")</h4>
             </div>
         </div>
+    </div>
 
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-header bg-white pb-0 border-0">
-                    <h5 class="fw-bold"><i class="bi bi-tools text-secondary"></i> Accesos Rápidos</h5>
-                </div>
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <a asp-controller="Products" asp-action="Create" class="btn btn-pamelita-primary text-start">
-                            <i class="bi bi-plus-circle me-2"></i> Añadir Nuevo Producto
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100 border-start border-5 border-primary">
+            <div class="card-body">
+                <p class="text-muted small mb-1">Balance General</p>
+                <h4 class="fw-bold text-primary mb-0">Bs. @ViewBag.Balance?.ToString("F2")</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100 border-start border-5 border-warning">
+            <div class="card-body">
+                <p class="text-muted small mb-1">Pedidos Hoy</p>
+                <h4 class="fw-bold text-warning mb-0">@ViewBag.PedidosHoy</h4>
+                <p class="text-muted small mb-0">Bs. @ViewBag.VentasHoy?.ToString("F2") facturado</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@* Fila principal: Últimas ventas + Alertas de stock *@
+<div class="row g-3 mb-4">
+
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3">
+                <h5 class="fw-bold mb-0">
+                    <i class="bi bi-receipt text-primary me-2"></i>Últimas Ventas
+                </h5>
+                <a asp-action="HistorialCompras" class="btn btn-sm btn-outline-primary">
+                    Ver todo <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+            <div class="card-body p-0">
+                @if (ViewBag.UltimosPedidos != null && ((IEnumerable<dynamic>)ViewBag.UltimosPedidos).Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-3">#</th>
+                                    <th>Cliente</th>
+                                    <th>Ítems</th>
+                                    <th class="text-end">Total</th>
+                                    <th class="text-center">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var pedido in ViewBag.UltimosPedidos)
+                                {
+                                    <tr>
+                                        <td class="ps-3 fw-semibold text-muted">#@pedido.Id</td>
+                                        <td>
+                                            @if (pedido.User != null)
+                                            {
+                                                <span class="fw-semibold">@pedido.User.FullName</span>
+                                                <br />
+                                                <small class="text-muted">@pedido.User.Email</small>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">Venta en local</span>
+                                            }
+                                        </td>
+                                        <td class="small text-muted">@pedido.Detalles.Count ítem(s)</td>
+                                        <td class="text-end fw-bold text-success">
+                                            Bs. @pedido.Total.ToString("F2")
+                                        </td>
+                                        <td class="text-center">
+                                            @if (pedido.Estado == "Completado")
+                                            {
+                                                <span class="badge bg-success">Completado</span>
+                                            }
+                                            else if (pedido.Estado == "Pendiente")
+                                            {
+                                                <span class="badge bg-warning text-dark">Pendiente</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger">@pedido.Estado</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center text-muted py-4">
+                        <i class="bi bi-receipt fs-2 d-block mb-2"></i>
+                        No hay ventas registradas aún.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0 pt-3">
+                <h5 class="fw-bold mb-0">
+                    <i class="bi bi-exclamation-triangle text-warning me-2"></i>Alertas de Stock
+                </h5>
+            </div>
+            <div class="card-body">
+                @if (ViewBag.BajoStock != null && ((IEnumerable<dynamic>)ViewBag.BajoStock).Any())
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var item in ViewBag.BajoStock)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                <span class="small fw-semibold">@item.Name</span>
+                                @if (item.Stock == 0)
+                                {
+                                    <span class="badge bg-danger rounded-pill">Agotado</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark rounded-pill">Stock: @item.Stock</span>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div class="text-center text-muted py-3">
+                        <i class="bi bi-check-circle fs-2 text-success d-block mb-2"></i>
+                        Todo el inventario está en niveles óptimos.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@* Fila inferior: Accesos rápidos + Resumen general *@
+<div class="row g-3">
+
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 pt-3">
+                <h5 class="fw-bold mb-0">
+                    <i class="bi bi-lightning-charge text-secondary me-2"></i>Accesos Rápidos
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-2">
+                    <div class="col-6">
+                        <a asp-controller="Products" asp-action="Create"
+                           class="btn btn-outline-primary w-100 text-start py-2">
+                            <i class="bi bi-plus-circle me-2"></i>Nuevo Producto
                         </a>
-                        <a asp-controller="Admin" asp-action="Proveedores" class="btn btn-outline-secondary text-start">
-                            <i class="bi bi-truck me-2"></i> Gestión de Proveedores
+                    </div>
+                    <div class="col-6">
+                        <a asp-controller="Admin" asp-action="CrearProveedor"
+                           class="btn btn-outline-secondary w-100 text-start py-2">
+                            <i class="bi bi-truck me-2"></i>Nuevo Proveedor
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a asp-controller="Insumos" asp-action="Crear"
+                           class="btn btn-outline-success w-100 text-start py-2">
+                            <i class="bi bi-boxes me-2"></i>Nuevo Insumo
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a asp-controller="Admin" asp-action="HistorialCompras"
+                           class="btn btn-outline-warning w-100 text-start py-2">
+                            <i class="bi bi-receipt me-2"></i>Ver Historial
                         </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 pt-3">
+                <h5 class="fw-bold mb-0">
+                    <i class="bi bi-bar-chart text-info me-2"></i>Resumen General
+                </h5>
+            </div>
+            <div class="card-body">
+                @{
+                    int stockBajoCount = ViewBag.BajoStock != null
+                        ? ((IEnumerable<dynamic>)ViewBag.BajoStock).Count()
+                        : 0;
+                }
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <span class="text-muted">Total de pedidos</span>
+                        <strong>@ViewBag.TotalPedidos</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <span class="text-muted">Pedidos hoy</span>
+                        <strong class="text-warning">@ViewBag.PedidosHoy</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <span class="text-muted">Productos con stock bajo</span>
+                        <strong class="@(stockBajoCount > 0 ? "text-danger" : "text-success")">
+                            @stockBajoCount
+                        </strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <span class="text-muted">Ingresos hoy</span>
+                        <strong class="text-success">Bs. @ViewBag.VentasHoy?.ToString("F2")</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
 </div>

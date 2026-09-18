@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin Pamelita</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .admin-sidebar {
+            min-height: 100vh;
+            background-color: #343a40;
+            color: white;
+            padding-top: 1rem;
+        }
+        .admin-sidebar .nav-link {
+            color: #adb5bd;
+            margin-bottom: 0.5rem;
+            border-radius: 5px;
+            padding: 0.5rem 1rem;
+        }
+        .admin-sidebar .nav-link:hover, .admin-sidebar .nav-link.active {
+            color: #fff;
+            background-color: #495057;
+        }
+        .admin-sidebar .nav-link i {
+            margin-right: 10px;
+        }
+        .admin-content {
+            padding: 2rem;
+        }
+        .admin-navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- Sidebar -->
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 admin-sidebar">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none border-bottom border-secondary w-100 mb-3">
+                        <span class="fs-5 d-none d-sm-inline fw-bold text-warning">🥟 Panel Admin</span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
+                        <li class="nav-item w-100">
+                            <a asp-controller="Admin" asp-action="Dashboard" class="nav-link align-middle @(ViewContext.RouteData.Values["Action"]?.ToString() == "Dashboard" ? "active" : "")">
+                                <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item w-100">
+                            <a asp-controller="Admin" asp-action="Productos" class="nav-link align-middle @(ViewContext.RouteData.Values["Action"]?.ToString() == "Productos" ? "active" : "")">
+                                <i class="fs-4 bi-box-seam"></i> <span class="ms-1 d-none d-sm-inline">Productos</span>
+                            </a>
+                        </li>
+                        <li class="nav-item w-100">
+                            <a asp-controller="Insumos" asp-action="Index" class="nav-link align-middle @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Insumos" ? "active" : "")">
+                                <i class="fs-4 bi-boxes"></i> <span class="ms-1 d-none d-sm-inline">Insumos</span>
+                            </a>
+                        </li>
+                        <li class="nav-item w-100">
+                            <a asp-controller="Admin" asp-action="Proveedores" class="nav-link align-middle @(ViewContext.RouteData.Values["Action"]?.ToString() == "Proveedores" ? "active" : "")">
+                                <i class="fs-4 bi-truck"></i> <span class="ms-1 d-none d-sm-inline">Proveedores</span>
+                            </a>
+                        </li>
+                        <li class="nav-item w-100">
+                            <a asp-controller="Admin" asp-action="HistorialCompras" class="nav-link align-middle @(ViewContext.RouteData.Values["Action"]?.ToString() == "HistorialCompras" ? "active" : "")">
+                                <i class="fs-4 bi-receipt"></i> <span class="ms-1 d-none d-sm-inline">Historial Clientes</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <hr>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="col d-flex flex-column h-sm-100">
+                <!-- Top Navbar -->
+                <nav class="navbar navbar-expand-lg admin-navbar px-4 py-2 d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 text-dark fw-bold">@ViewData["Title"]</h4>
+                    <div class="d-flex align-items-center">
+                        <span class="me-3 fw-medium">Admin: @User.Identity?.Name</span>
+                        <a asp-controller="Products" asp-action="Index" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-arrow-left-circle me-1"></i> Modo Cliente
+                        </a>
+                    </div>
+                </nav>
+
+                <!-- Main Content -->
+                <main class="flex-grow-1 overflow-auto admin-content">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
