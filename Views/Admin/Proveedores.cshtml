@@ -23,6 +23,12 @@
 </div>
 
 <div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <div class="input-group">
+            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control admin-search-input" data-target=".searchable-item" placeholder="Buscar por nombre, contacto, teléfono, fecha...">
+        </div>
+    </div>
     <div class="card-body p-0">
         @if (Model != null && Model.Any())
         {
@@ -42,7 +48,7 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr>
+                            <tr class="searchable-item">
                                 <td class="ps-4 text-muted small">@item.Id</td>
                                 <td class="fw-semibold">@item.Nombre</td>
                                 <td>@(item.Contacto ?? "—")</td>

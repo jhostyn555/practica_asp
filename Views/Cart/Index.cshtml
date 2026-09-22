@@ -35,7 +35,14 @@
                                                 </div>
                                             </td>
                                             <td>Bs. @item.Price.ToString("F2")</td>
-                                            <td>@item.Quantity</td>
+                                            <td style="width: 150px;">
+                                                <form asp-action="UpdateQuantity" method="post" class="d-flex align-items-center">
+                                                    <input type="hidden" name="productId" value="@item.ProductId" />
+                                                    <input type="number" name="quantity" value="@item.Quantity" min="1" step="1" 
+                                                           class="form-control form-control-sm text-center" style="width: 70px;" 
+                                                           onchange="this.form.submit()" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
+                                                </form>
+                                            </td>
                                             <td class="fw-bold">Bs. @item.Total.ToString("F2")</td>
                                             <td>
                                                 <form asp-action="Remove" method="post">

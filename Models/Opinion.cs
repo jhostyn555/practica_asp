@@ -22,6 +22,9 @@ namespace proyecto_asp.Models
         [MaxLength(1000)]
         public string? Comentario { get; set; }
 
+        [MaxLength(100)]
+        public string? NombrePublico { get; set; } // Nombre del visitante o cliente
+
         public DateTime Fecha { get; set; } = DateTime.UtcNow;
     }
 }

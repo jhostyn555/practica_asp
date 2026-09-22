@@ -62,6 +62,12 @@ namespace proyecto_asp.Controllers
             }
 
             SaveCart(cart);
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return Json(new { success = true, count = cart.Sum(c => c.Quantity) });
+            }
+
             return RedirectToAction("Index", "Products");
         }
 
@@ -73,6 +79,21 @@ namespace proyecto_asp.Controllers
             if (item != null)
             {
                 cart.Remove(item);
+                SaveCart(cart);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult UpdateQuantity(int productId, int quantity)
+        {
+            if (quantity < 1) quantity = 1;
+            
+            var cart = GetCart();
+            var item = cart.FirstOrDefault(c => c.ProductId == productId);
+            if (item != null)
+            {
+                item.Quantity = quantity;
                 SaveCart(cart);
             }
             return RedirectToAction(nameof(Index));

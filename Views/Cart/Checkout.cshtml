@@ -14,15 +14,7 @@
                 <form asp-action="ProcessCheckout" method="post">
                     <div class="mb-4">
                         <div class="form-check mb-3 p-3 border rounded shadow-sm">
-                            <input class="form-check-input ms-1" type="radio" name="metodoPago" id="pagoEfectivo" value="Efectivo" checked>
-                            <label class="form-check-label ms-2 fw-bold d-flex align-items-center" for="pagoEfectivo">
-                                <i class="bi bi-cash-stack text-success fs-4 me-2"></i> Pago en Efectivo
-                            </label>
-                            <small class="text-muted d-block ms-5">Pagos al momento de recibir o retirar el pedido.</small>
-                        </div>
-                        
-                        <div class="form-check mb-3 p-3 border rounded shadow-sm">
-                            <input class="form-check-input ms-1" type="radio" name="metodoPago" id="pagoQR" value="QR">
+                            <input class="form-check-input ms-1" type="radio" name="metodoPago" id="pagoQR" value="QR" checked>
                             <label class="form-check-label ms-2 fw-bold d-flex align-items-center" for="pagoQR">
                                 <i class="bi bi-qr-code-scan text-primary fs-4 me-2"></i> Pago con QR Simple
                             </label>

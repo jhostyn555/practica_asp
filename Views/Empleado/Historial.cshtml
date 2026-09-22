@@ -1,0 +1,126 @@
+@model IEnumerable<proyecto_asp.Models.Pedido>
+
+@{
+    ViewData["Title"] = "Historial de Ventas - Empleados";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-0">
+            <i class="bi bi-clock-history text-warning"></i> Historial de Ventas en Caja (Empleado)
+        </h2>
+        <p class="text-muted small mb-0">Listado de todos los pedidos registrados presencialmente por el personal de atención.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-controller="Empleado" asp-action="Index" class="btn btn-warning text-dark fw-bold">
+            <i class="bi bi-cash-coin me-1"></i> Ir a la Caja (Toma de Pedidos)
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <div class="input-group">
+            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control admin-search-input" data-target=".searchable-item" placeholder="Buscar por # pedido, método de pago, fecha, productos...">
+        </div>
+    </div>
+    <div class="card-body p-0">
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="ps-4"># Pedido</th>
+                            <th>Tipo de Venta</th>
+                            <th>Fecha y Hora</th>
+                            <th>Productos</th>
+                            <th class="text-end">Total</th>
+                            <th class="text-center">Método Pago</th>
+                            <th class="text-center">Estado</th>
+                            <th class="text-center">Factura</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pedido in Model)
+                        {
+                            <tr class="searchable-item">
+                                <td class="ps-4 fw-bold text-primary">#@pedido.Id</td>
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        <i class="bi bi-shop me-1"></i>Venta en Local
+                                    </span>
+                                </td>
+                                <td>
+                                    <div>@pedido.FechaPedido.ToLocalTime().ToString("dd/MM/yyyy")</div>
+                                    <small class="text-muted">@pedido.FechaPedido.ToLocalTime().ToString("HH:mm")</small>
+                                </td>
+                                <td>
+                                    @if (pedido.Detalles != null && pedido.Detalles.Any())
+                                    {
+                                        <ul class="mb-0 ps-3 small">
+                                            @foreach (var d in pedido.Detalles)
+                                            {
+                                                <li>@d.Cantidad x @(d.Product?.Name ?? "Producto") <span class="text-muted">(Bs. @d.PrecioUnitario.ToString("F2"))</span></li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">—</span>
+                                    }
+                                </td>
+                                <td class="text-end fw-bold text-success">Bs. @pedido.Total.ToString("F2")</td>
+                                <td class="text-center">
+                                    @if (pedido.MetodoPago == "Tarjeta")
+                                    {
+                                        <span class="badge bg-primary"><i class="bi bi-credit-card me-1"></i>Tarjeta</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success"><i class="bi bi-cash-stack me-1"></i>Efectivo</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Completado</span>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group btn-group-sm shadow-sm rounded-pill overflow-hidden border">
+                                        <a asp-action="DescargarFacturaPdf" asp-route-id="@pedido.Id" class="btn btn-danger btn-sm fw-bold px-2" title="Descargar Factura PDF">
+                                            <i class="bi bi-file-earmark-pdf-fill me-1"></i> PDF
+                                        </a>
+                                        <a asp-action="DescargarFacturaExcel" asp-route-id="@pedido.Id" class="btn btn-success btn-sm fw-bold px-2" title="Descargar Factura Excel">
+                                            <i class="bi bi-file-earmark-excel-fill me-1"></i> Excel
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot class="table-light">
+                        <tr>
+                            <td colspan="4" class="text-end fw-bold ps-4">Total Ventas en Caja:</td>
+                            <td class="text-end fw-bold text-success">
+                                Bs. @Model.Sum(p => p.Total).ToString("F2")
+                            </td>
+                            <td colspan="3"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <i class="bi bi-receipt display-3 text-muted mb-3 d-block"></i>
+                <h5 class="text-muted">No hay registros de ventas en caja aún</h5>
+                <p class="text-muted small">Registra tu primer pedido en el panel POS.</p>
+                <a asp-action="Index" class="btn btn-warning mt-2 fw-bold text-dark">
+                    <i class="bi bi-cash-coin me-1"></i> Ir a la Caja
+                </a>
+            </div>
+        }
+    </div>
+</div>

@@ -3,42 +3,62 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold mb-0">@ViewData["Title"]</h3>
+    <a asp-action="DescargarReporteMensual" class="btn btn-primary shadow-sm">
+        <i class="bi bi-file-earmark-pdf me-1"></i> Reporte del Mes
+    </a>
+</div>
+
 @* Fila superior: tarjetas de métricas *@
 <div class="row g-3 mb-4">
 
-    <div class="col-sm-6 col-xl-3">
+    <div class="col-sm-6 col-xl">
         <div class="card border-0 shadow-sm h-100 border-start border-5 border-success">
             <div class="card-body">
-                <p class="text-muted small mb-1">Ingresos Totales</p>
+                <p class="text-muted small mb-1">Ingresos (Total Ventas)</p>
                 <h4 class="fw-bold text-success mb-0">Bs. @ViewBag.Ingresos?.ToString("F2")</h4>
+                <small class="text-muted">Suma de todos los pedidos</small>
             </div>
         </div>
     </div>
 
-    <div class="col-sm-6 col-xl-3">
+    <div class="col-sm-6 col-xl">
         <div class="card border-0 shadow-sm h-100 border-start border-5 border-danger">
             <div class="card-body">
-                <p class="text-muted small mb-1">Egresos Totales</p>
+                <p class="text-muted small mb-1">Egresos (Valor Insumos)</p>
                 <h4 class="fw-bold text-danger mb-0">Bs. @ViewBag.Egresos?.ToString("F2")</h4>
+                <small class="text-muted">Costo total del inventario</small>
             </div>
         </div>
     </div>
 
-    <div class="col-sm-6 col-xl-3">
+    <div class="col-sm-6 col-xl">
         <div class="card border-0 shadow-sm h-100 border-start border-5 border-primary">
             <div class="card-body">
                 <p class="text-muted small mb-1">Balance General</p>
                 <h4 class="fw-bold text-primary mb-0">Bs. @ViewBag.Balance?.ToString("F2")</h4>
+                <small class="text-muted">Ingresos − Egresos</small>
             </div>
         </div>
     </div>
 
-    <div class="col-sm-6 col-xl-3">
+    <div class="col-sm-6 col-xl">
         <div class="card border-0 shadow-sm h-100 border-start border-5 border-warning">
             <div class="card-body">
                 <p class="text-muted small mb-1">Pedidos Hoy</p>
                 <h4 class="fw-bold text-warning mb-0">@ViewBag.PedidosHoy</h4>
                 <p class="text-muted small mb-0">Bs. @ViewBag.VentasHoy?.ToString("F2") facturado</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-xl">
+        <div class="card border-0 shadow-sm h-100 border-start border-5 border-info">
+            <div class="card-body">
+                <p class="text-muted small mb-1">Valor en Productos</p>
+                <h4 class="fw-bold text-info mb-0">Bs. @ViewBag.ValorProductos?.ToString("F2")</h4>
+                <small class="text-muted">Precio × Stock disponible</small>
             </div>
         </div>
     </div>
@@ -50,13 +70,19 @@
 
     <div class="col-lg-8">
         <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3">
+            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3 flex-wrap gap-2">
                 <h5 class="fw-bold mb-0">
                     <i class="bi bi-receipt text-primary me-2"></i>Últimas Ventas
                 </h5>
-                <a asp-action="HistorialCompras" class="btn btn-sm btn-outline-primary">
-                    Ver todo <i class="bi bi-arrow-right ms-1"></i>
-                </a>
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="input-group input-group-sm" style="width: 250px;">
+                        <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control admin-search-input" data-target=".searchable-item" placeholder="Buscar venta...">
+                    </div>
+                    <a asp-action="HistorialCompras" class="btn btn-sm btn-outline-primary">
+                        Ver todo <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
             </div>
             <div class="card-body p-0">
                 @if (ViewBag.UltimosPedidos != null && ((IEnumerable<dynamic>)ViewBag.UltimosPedidos).Any())
@@ -75,7 +101,7 @@
                             <tbody>
                                 @foreach (var pedido in ViewBag.UltimosPedidos)
                                 {
-                                    <tr>
+                                    <tr class="searchable-item">
                                         <td class="ps-3 fw-semibold text-muted">#@pedido.Id</td>
                                         <td>
                                             @if (pedido.User != null)

@@ -37,6 +37,12 @@
 }
 
 <div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <div class="input-group">
+            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control admin-search-input" data-target=".searchable-item" placeholder="Buscar por nombre, categoría o fecha...">
+        </div>
+    </div>
     <div class="card-body p-0">
         @if (Model != null && Model.Any())
         {
@@ -47,6 +53,7 @@
                             <th class="ps-4">#</th>
                             <th>Nombre</th>
                             <th>Categoría</th>
+                            <th>Fecha Registro</th>
                             <th class="text-end">Precio</th>
                             <th class="text-center">Stock</th>
                             <th class="text-center">Stock Mín.</th>
@@ -58,7 +65,7 @@
                         @foreach (var item in Model)
                         {
                             bool stockBajo = item.Stock <= item.StockMinimo;
-                            <tr class="@(stockBajo ? "table-warning" : "")">
+                            <tr class="searchable-item @(stockBajo ? "table-warning" : "")">
                                 <td class="ps-4 text-muted small">@item.Id</td>
                                 <td class="fw-semibold">@item.Name</td>
                                 <td>
@@ -71,6 +78,7 @@
                                         <span class="text-muted">—</span>
                                     }
                                 </td>
+                                <td>@item.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy")</td>
                                 <td class="text-end fw-bold">Bs. @item.Price.ToString("F2")</td>
                                 <td class="text-center fw-bold @(stockBajo ? "text-danger" : "text-success")">
                                     @item.Stock

@@ -1,0 +1,112 @@
+@model IEnumerable<proyecto_asp.Models.Categoria>
+
+@{
+    ViewData["Title"] = "Gestión de Categorías";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@if (TempData["Exito"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-2"></i> @TempData["Exito"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">
+        <i class="bi bi-tags text-primary"></i> Gestión de Categorías
+    </h2>
+    <a asp-action="CrearCategoria" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i> Nueva Categoría
+    </a>
+</div>
+
+<div class="alert alert-info d-flex align-items-center mb-4" role="alert">
+    <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+    <div>
+        Las categorías <strong>activas</strong> aparecen como botones de filtro en la página de inicio del cliente.
+        El campo <strong>Ícono</strong> acepta clases de <a href="https://icons.getbootstrap.com/" target="_blank" class="alert-link">Bootstrap Icons</a> (ej: <code>bi-egg-fried</code>, <code>bi-cup-straw</code>).
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <div class="input-group">
+            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control admin-search-input" data-target=".searchable-item" placeholder="Buscar por nombre...">
+        </div>
+    </div>
+    <div class="card-body p-0">
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="ps-4">#</th>
+                            <th>Nombre</th>
+                            <th>Ícono Preview</th>
+                            <th class="text-center">Estado</th>
+                            <th>Fecha Creación</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var cat in Model)
+                        {
+                            <tr class="searchable-item">
+                                <td class="ps-4 text-muted small">@cat.Id</td>
+                                <td class="fw-semibold">@cat.Nombre</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(cat.Icono))
+                                    {
+                                        <span class="badge bg-secondary fs-6">
+                                            <i class="bi @cat.Icono me-1"></i> @cat.Icono
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">—</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @if (cat.Activa)
+                                    {
+                                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Activa</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Inactiva</span>
+                                    }
+                                </td>
+                                <td class="text-muted small">@cat.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">
+                                    <a asp-action="EditarCategoria" asp-route-id="@cat.Id"
+                                       class="btn btn-sm btn-outline-primary me-1" title="Editar">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-action="EliminarCategoria" asp-route-id="@cat.Id"
+                                       class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <i class="bi bi-tags display-3 text-muted mb-3 d-block"></i>
+                <h5 class="text-muted">No hay categorías registradas</h5>
+                <p class="text-muted small">Crea categorías para organizar tus productos y que aparezcan como filtros en el menú.</p>
+                <a asp-action="CrearCategoria" class="btn btn-primary mt-2">
+                    <i class="bi bi-plus-circle me-1"></i> Nueva Categoría
+                </a>
+            </div>
+        }
+    </div>
+</div>

@@ -21,9 +21,6 @@
                 <a href="#menu-seccion" class="btn btn-pamelita-primary btn-lg">
                     <i class="bi bi-cart-plus me-2"></i> Hacer Pedido
                 </a>
-                <a href="#ventajas" class="btn btn-pamelita-secondary btn-lg">
-                    <i class="bi bi-shop me-2"></i> Nuestras Especialidades
-                </a>
             </div>
         </div>
     </div>
@@ -78,7 +75,7 @@
 <!-- Nuestras Especialidades -->
 <section class="py-5 bg-light" id="menu-seccion">
     <div class="container">
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
             <div>
                 <h2 class="fw-extrabold m-0 text-dark">
                     <i class="bi bi-star text-warning me-2"></i>Nuestras Especialidades
@@ -89,15 +86,48 @@
             @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
             {
                 <a href="@Url.Action("Create")" class="btn btn-pamelita-primary">
-                    <i class="bi bi-plus-circle me-1"></i> Nuevo Producto (Admin)
+                    <i class="bi bi-plus-circle me-1"></i> Nuevo (Admin)
                 </a>
+            }
+        </div>
+
+        @* Buscador en su propia línea completa debajo del título *@
+        <div class="mb-4">
+            <div class="mb-4">
+                <div class="input-group shadow-sm">
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-warning"></i></span>
+                    <input type="text" id="buscadorProductos"
+                           class="form-control border-start-0 ps-0"
+                           placeholder="Buscar producto por nombre o ingrediente..." />
+                </div>
+            </div>
+        </div>
+
+        @* Botones de filtro dinámicos por categoría *@
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <a href="@Url.Action("Index", "Products")#menu-seccion"
+               class="btn btn-sm @(string.IsNullOrEmpty(ViewBag.Categoria as string) ? "btn-pamelita-primary" : "btn-outline-secondary") rounded-pill">
+                <i class="bi bi-grid me-1"></i> Todos
+            </a>
+            @if (ViewBag.Categorias != null)
+            {
+                foreach (var cat in ViewBag.Categorias)
+                {
+                    string catNombre = cat.Nombre;
+                    string catIcono = cat.Icono ?? "bi-tag";
+                    bool isActive = (ViewBag.Categoria as string) == catNombre;
+                    <a href="@Url.Action("Categoria", "Products", new { nombre = catNombre })"
+                       class="btn btn-sm @(isActive ? "btn-pamelita-primary" : "btn-outline-secondary") rounded-pill">
+                        <i class="bi @catIcono me-1"></i> @catNombre
+                    </a>
+                }
             }
         </div>
 
         <div class="row g-4">
             @if (Model != null && Model.Any())
             {
-                foreach (var product in Model)
+                foreach (var product in Model.Take(3))
                 {
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="product-card">
@@ -127,7 +157,7 @@
                                 </div>
 
                                 <div class="d-flex gap-2 mt-auto">
-                                    <form asp-controller="Cart" asp-action="Add" method="post" class="flex-grow-1">
+                                    <form asp-controller="Cart" asp-action="Add" method="post" class="flex-grow-1 add-to-cart-form">
                                         <input type="hidden" name="productId" value="@product.Id" />
                                         <button type="submit" class="btn btn-pamelita-primary w-100">
                                             <i class="bi bi-cart-plus me-1"></i> Añadir
@@ -166,32 +196,206 @@
     </div>
 </section>
 
-<!-- Testimonios -->
+@* Testimonios dinámicos *@
 <section class="py-5" id="testimonios">
-    <div class="container text-center">
-        <h2 class="fw-bold mb-4 text-dark">Lo que dicen nuestros clientes</h2>
-        <div class="row g-4 justify-content-center">
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4">
-                    <div class="text-warning mb-2">
-                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                    </div>
-                    <p>"Las mejores empanadas de la ciudad, siempre frescas y con mucho relleno. ¡Totalmente recomendadas!"</p>
-                    <small class="fw-bold">- Carlos M.</small>
-                </div>
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-dark">Lo que dicen nuestros clientes</h2>
+            <p class="text-muted">Opiniones reales de quienes ya disfrutaron nuestras empanadas.</p>
+        </div>
+
+        @* Alerta de éxito / error al enviar opinión *@
+        @if (TempData["OpinionExito"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                <i class="bi bi-check-circle me-2"></i> @TempData["OpinionExito"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4">
-                    <div class="text-warning mb-2">
-                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
-                    </div>
-                    <p>"Me encanta la atención y el sabor único. Ideal para compartir en familia los fines de semana."</p>
-                    <small class="fw-bold">- Andrea V.</small>
+        }
+        @if (TempData["OpinionError"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                <i class="bi bi-exclamation-circle me-2"></i> @TempData["OpinionError"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <div class="text-center mb-4">
+            <button class="btn btn-warning fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOpinionForm" aria-expanded="false" aria-controls="collapseOpinionForm">
+                <i class="bi bi-pencil-square me-1"></i> Añade tu opinión
+            </button>
+        </div>
+
+        @* Formulario para dejar comentario *@
+        <div class="collapse mb-5" id="collapseOpinionForm">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="bi bi-pencil-square text-warning me-2"></i>Deja tu opinión
+                    </h5>
+                    <form asp-controller="Opiniones" asp-action="Enviar" method="post">
+                        @Html.AntiForgeryToken()
+
+                        @if (User.Identity?.IsAuthenticated != true)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Tu nombre</label>
+                                <input type="text" name="nombrePublico" class="form-control"
+                                       placeholder="¿Cómo te llamas?" maxlength="100" required />
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Calificación</label>
+                            <div class="star-rating d-flex gap-2 fs-3" id="starContainer">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <i class="bi bi-star star-btn" data-value="@i"
+                                       style="cursor:pointer; color:#ccc;" title="@i estrella(s)"></i>
+                                }
+                            </div>
+                            <input type="hidden" name="calificacion" id="calificacionInput" value="0" required />
+                            <small class="text-muted" id="starLabel">Selecciona las estrellas</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Comentario</label>
+                            <textarea name="comentario" class="form-control" rows="3"
+                                      placeholder="Cuéntanos tu experiencia..." maxlength="1000" required minlength="5"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-pamelita-primary">
+                            <i class="bi bi-send me-1"></i> Enviar opinión
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
+
+        @* Comentarios existentes *@
+        @if (ViewBag.Opiniones != null && ((IEnumerable<dynamic>)ViewBag.Opiniones).Any())
+        {
+            <div class="d-flex flex-column gap-3">
+                @foreach (var op in ViewBag.Opiniones)
+                {
+                    string nombre = op.NombrePublico ?? op.User?.FullName ?? "Anónimo";
+                    string inicial = nombre.Length > 0 ? nombre.Substring(0, 1).ToUpper() : "A";
+
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body d-flex gap-3">
+                            <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center fw-bold text-dark flex-shrink-0"
+                                 style="width:44px;height:44px;font-size:1.1rem;">
+                                @inicial
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between flex-wrap gap-1">
+                                    <span class="fw-bold">@nombre</span>
+                                    <small class="text-muted">@op.Fecha.ToLocalTime().ToString("dd/MM/yyyy")</small>
+                                </div>
+                                <div class="text-warning my-1">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= op.Calificacion)
+                                        {
+                                            <i class="bi bi-star-fill"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-star" style="color:#ccc;"></i>
+                                        }
+                                    }
+                                </div>
+                                <p class="mb-0 text-secondary">@(op.Comentario ?? "")</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center text-muted py-3">
+                <i class="bi bi-chat-square-text fs-2 d-block mb-2"></i>
+                Sé el primero en dejar un comentario.
+            </div>
+        }
     </div>
 </section>
+
+@section Scripts {
+    <script>
+        const stars = document.querySelectorAll('.star-btn');
+        const input = document.getElementById('calificacionInput');
+        const label = document.getElementById('starLabel');
+        const labels = ['', '1 estrella - Malo', '2 estrellas - Regular', '3 estrellas - Bueno', '4 estrellas - Muy bueno', '5 estrellas - Excelente'];
+
+        stars.forEach(star => {
+            star.addEventListener('mouseenter', () => highlightStars(+star.dataset.value));
+            star.addEventListener('mouseleave', () => highlightStars(+input.value));
+            star.addEventListener('click', () => {
+                input.value = star.dataset.value;
+                label.textContent = labels[+star.dataset.value];
+                highlightStars(+star.dataset.value);
+            });
+        });
+
+        function highlightStars(val) {
+            stars.forEach(s => {
+                const v = +s.dataset.value;
+                s.classList.toggle('bi-star-fill', v <= val);
+                s.classList.toggle('bi-star', v > val);
+                s.style.color = v <= val ? '#ffc107' : '#ccc';
+            });
+        }
+
+        // --- Manejo AJAX del carrito para no refrescar la página ---
+        $(document).ready(function () {
+            $('.add-to-cart-form').submit(function (e) {
+                e.preventDefault(); // Evitar recarga completa
+                
+                var form = $(this);
+                var btn = form.find('button[type="submit"]');
+                var originalHtml = btn.html();
+                
+                // Mostrar estado de "cargando"
+                btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>').prop('disabled', true);
+                
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        // Si se actualizó el contador, actualizar la insignia en el menú
+                        if (response.success && response.count > 0) {
+                            var badge = $('#cart-count');
+                            badge.text(response.count);
+                            if (badge.css('display') === 'none') {
+                                badge.show();
+                            }
+                            
+                            // Efecto de rebote para llamar la atención sobre el carrito
+                            badge.addClass('animate__animated animate__bounceIn');
+                            setTimeout(function(){ badge.removeClass('animate__animated animate__bounceIn'); }, 1000);
+                        }
+                        
+                        // Mostrar "Listo" temporalmente
+                        btn.removeClass('btn-pamelita-primary').addClass('btn-success').html('<i class="bi bi-check-lg"></i> Listo');
+                        
+                        setTimeout(function() {
+                            // Restaurar botón original
+                            btn.removeClass('btn-success').addClass('btn-pamelita-primary').html(originalHtml).prop('disabled', false);
+                        }, 1500);
+                    },
+                    error: function () {
+                        // En caso de error, restaurar
+                        btn.html(originalHtml).prop('disabled', false);
+                        alert("Hubo un error al añadir al carrito.");
+                    }
+                });
+            });
+        });
+    </script>
+}
 
 <!-- Contacto Rapido -->
 <section class="py-5 bg-dark text-white" id="contacto">

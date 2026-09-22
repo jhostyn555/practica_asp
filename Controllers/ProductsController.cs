@@ -28,6 +28,20 @@ namespace proyecto_asp.Controllers
             }
 
             var products = await query.ToListAsync();
+
+            // Cargar opiniones para la sección de testimonios
+            ViewBag.Opiniones = await context.Opiniones
+                .Include(o => o.User)
+                .OrderByDescending(o => o.Id)
+                .Take(20)
+                .ToListAsync();
+
+            // Cargar categorías activas para los botones de filtro dinámicos
+            ViewBag.Categorias = await context.Categorias
+                .Where(c => c.Activa)
+                .OrderBy(c => c.Id)
+                .ToListAsync();
+
             return View(products);
         }
 
@@ -39,8 +53,35 @@ namespace proyecto_asp.Controllers
             return View(product);
         }
 
+        [AllowAnonymous]
+        public async Task<IActionResult> Categoria(string nombre, string searchQuery)
+        {
+            if (string.IsNullOrEmpty(nombre)) return RedirectToAction(nameof(Index));
+
+            var cat = await context.Categorias.FirstOrDefaultAsync(c => c.Nombre == nombre);
+
+            var query = context.Products.AsNoTracking().Where(p => p.Category == nombre);
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                query = query.Where(p => p.Name.Contains(searchQuery) || p.Description.Contains(searchQuery));
+                ViewBag.SearchQuery = searchQuery;
+            }
+
+            var products = await query.ToListAsync();
+
+            ViewBag.CategoriaNombre = nombre;
+            ViewBag.CategoriaIcono = cat?.Icono ?? "bi-tag";
+
+            return View(products);
+        }
+
         [Authorize(Roles = "Admin")]
-        public IActionResult Create() => View();
+        public async Task<IActionResult> Create()
+        {
+            ViewBag.Categorias = await context.Categorias.Where(c => c.Activa).OrderBy(c => c.Nombre).ToListAsync();
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -58,6 +99,7 @@ namespace proyecto_asp.Controllers
         {
             var product = await context.Products.FindAsync(id);
             if (product == null) return NotFound();
+            ViewBag.Categorias = await context.Categorias.Where(c => c.Activa).OrderBy(c => c.Nombre).ToListAsync();
             return View(product);
         }
 

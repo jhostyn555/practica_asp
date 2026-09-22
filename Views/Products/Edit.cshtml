@@ -50,7 +50,16 @@
 
                     <div class="form-group mb-4">
                         <label asp-for="Category" class="form-label fw-bold">Categoría</label>
-                        <input asp-for="Category" class="form-control form-control-pamelita" />
+                        <select asp-for="Category" class="form-select form-control-pamelita">
+                            <option value="">-- Sin categoría --</option>
+                            @if (ViewBag.Categorias != null)
+                            {
+                                foreach (var cat in ViewBag.Categorias)
+                                {
+                                    <option value="@cat.Nombre" selected="@(Model.Category == cat.Nombre ? "selected" : null)">@cat.Nombre</option>
+                                }
+                            }
+                        </select>
                         <span asp-validation-for="Category" class="text-danger small"></span>
                     </div>
 

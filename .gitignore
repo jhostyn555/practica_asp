@@ -1,12 +1,13 @@
-# Excluir credenciales y configuraciones locales
-appsettings.json
+# Archivos de configuración local y secretos
 appsettings.Development.json
+appsettings.Local.json
 
-# Excluir archivos compilados y temporales
+# Archivos compilados y carpetas temporales
 bin/
 obj/
 .vs/
 *.user
+*.suo
 
-# Excluir claves de compilación
+# Claves de compilación y certificados
 *.pfx
