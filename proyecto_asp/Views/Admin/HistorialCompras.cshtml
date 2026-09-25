@@ -1,0 +1,177 @@
+@model IEnumerable<proyecto_asp.Models.Pedido>
+
+@{
+    ViewData["Title"] = "Historial de Clientes";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">
+        <i class="bi bi-receipt text-primary"></i> Historial de Pedidos
+    </h2>
+    <div class="text-muted small">
+        Total de pedidos: <strong>@Model.Count()</strong>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <div class="input-group">
+            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+            <input type="text" id="historialSearch" class="form-control admin-search-input" data-target=".searchable-item" placeholder="Buscar por cliente, pedido, método de pago, fecha...">
+            <button type="button" class="btn-voice" data-voice-for="historialSearch" title="Buscar por voz">
+                <i class="bi bi-mic-fill"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="ps-4"># Pedido</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Productos</th>
+                            <th class="text-end">Total</th>
+                            <th class="text-center">Método Pago</th>
+                            <th class="text-center">Estado</th>
+                            <th class="text-center">Factura</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pedido in Model)
+                        {
+                            <tr class="searchable-item">
+                                <td class="ps-4 fw-bold text-primary">#@pedido.Id</td>
+                                <td>
+                                    @if (pedido.User != null)
+                                    {
+                                        <div>
+                                            <span class="fw-semibold">@pedido.User.FullName</span>
+                                            <br />
+                                            <small class="text-muted">@pedido.User.Email</small>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            <i class="bi bi-shop me-1"></i>Venta en local
+                                        </span>
+                                    }
+                                </td>
+                                <td>
+                                    <div>@pedido.FechaPedido.ToLocalTime().ToString("dd/MM/yyyy")</div>
+                                    <small class="text-muted">@pedido.FechaPedido.ToLocalTime().ToString("HH:mm")</small>
+                                </td>
+                                <td>
+                                    @if (pedido.Detalles != null && pedido.Detalles.Any())
+                                    {
+                                        <ul class="mb-0 ps-3 small">
+                                            @foreach (var d in pedido.Detalles)
+                                            {
+                                                <li>@d.Cantidad x @d.Product?.Name <span class="text-muted">(Bs. @d.PrecioUnitario.ToString("F2"))</span></li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">—</span>
+                                    }
+                                </td>
+                                <td class="text-end fw-bold text-success">Bs. @pedido.Total.ToString("F2")</td>
+                                <td class="text-center">
+                                    @switch (pedido.MetodoPago)
+                                    {
+                                        case "QR":
+                                            <span class="badge bg-info text-dark"><i class="bi bi-qr-code me-1"></i>QR</span>
+                                            break;
+                                        case "Tarjeta":
+                                            <span class="badge bg-primary"><i class="bi bi-credit-card me-1"></i>Tarjeta</span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-secondary"><i class="bi bi-cash me-1"></i>Efectivo</span>
+                                            break;
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <select class="form-select form-select-sm estado-select fw-bold"
+                                            data-pedido-id="@pedido.Id"
+                                            style="min-width:130px;">
+                                        <!option value="Pendiente" @(pedido.Estado == "Pendiente" ? "selected" : "")>⏳ Pendiente</!option>
+                                        <!option value="En camino" @(pedido.Estado == "En camino" ? "selected" : "")>🚚 En camino</!option>
+                                        <!option value="Completado" @(pedido.Estado == "Completado" ? "selected" : "")>✅ Completado</!option>
+                                    </select>
+                                    <small class="text-success d-none estado-ok-msg"><i class="bi bi-check"></i> Guardado</small>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group btn-group-sm shadow-sm rounded-pill overflow-hidden border">
+                                        <a asp-action="DescargarFacturaPdf" asp-route-id="@pedido.Id" class="btn btn-danger btn-sm fw-bold px-2" title="Factura PDF">
+                                            <i class="bi bi-file-earmark-pdf-fill me-1"></i> PDF
+                                        </a>
+                                        <a asp-action="DescargarFacturaExcel" asp-route-id="@pedido.Id" class="btn btn-success btn-sm fw-bold px-2" title="Factura Excel">
+                                            <i class="bi bi-file-earmark-excel-fill me-1"></i> Excel
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot class="table-light">
+                        <tr>
+                            <td colspan="4" class="text-end fw-bold ps-4">Total General:</td>
+                            <td class="text-end fw-bold text-success">
+                                Bs. @Model.Sum(p => p.Total).ToString("F2")
+                            </td>
+                            <td colspan="3"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <i class="bi bi-receipt display-3 text-muted mb-3 d-block"></i>
+                <h5 class="text-muted">No hay pedidos registrados aún</h5>
+                <p class="text-muted small">Los pedidos de los clientes aparecerán aquí.</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    $(document).ready(function () {
+        $('.estado-select').on('change', function () {
+            const select = $(this);
+            const pedidoId = select.data('pedido-id');
+            const nuevoEstado = select.val();
+            const okMsg = select.siblings('.estado-ok-msg');
+
+            $.post('@Url.Action("ActualizarEstado", "Admin")', { id: pedidoId, estado: nuevoEstado }, function (resp) {
+                if (resp.success) {
+                    // Colorear el select según el estado
+                    select.removeClass('border-warning border-success border-secondary');
+                    if (nuevoEstado === 'Completado') select.addClass('border-success text-success');
+                    else if (nuevoEstado === 'En camino') select.addClass('border-warning');
+                    else select.addClass('border-secondary');
+
+                    // Mostrar "Guardado" brevemente
+                    okMsg.removeClass('d-none');
+                    setTimeout(function () { okMsg.addClass('d-none'); }, 2000);
+                }
+            });
+        });
+
+        // Colorear los selects al cargar según el estado inicial
+        $('.estado-select').each(function () {
+            const val = $(this).val();
+            if (val === 'Completado') $(this).addClass('border-success text-success');
+            else if (val === 'En camino') $(this).addClass('border-warning');
+        });
+    });
+</script>
+}

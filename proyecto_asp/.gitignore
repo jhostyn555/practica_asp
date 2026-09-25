@@ -1,0 +1,12 @@
+# Archivos de configuración local y secretos
+appsettings.Development.json
+appsettings.Local.json
+
+# Archivos compilados y carpetas temporales
+bin/
+obj/
+.vs/
+*.user
+*.suo
+# Claves de compilación y certificados
+*.pfx

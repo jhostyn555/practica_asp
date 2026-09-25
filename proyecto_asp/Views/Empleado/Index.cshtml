@@ -1,0 +1,565 @@
+@{
+    ViewData["Title"] = "Registro de Pedidos - Empleados";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var categorias = ViewBag.Categorias as IEnumerable<proyecto_asp.Models.Categoria> ?? new List<proyecto_asp.Models.Categoria>();
+    var productos = ViewBag.Productos as IEnumerable<proyecto_asp.Models.Product> ?? new List<proyecto_asp.Models.Product>();
+}
+
+<!-- Encabezado de la Sección POS -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="fw-bold mb-0 text-dark">
+            <i class="bi bi-cash-coin text-warning me-2"></i>Caja / Toma de Pedidos (Empleado)
+        </h2>
+        <p class="text-muted small mb-0">Catálogo interactivo y registro directo de ventas en el punto de venta (POS).</p>
+    </div>
+    <div class="d-flex gap-2 align-items-center">
+        <button id="btnOpenOrderPanel" type="button" class="btn btn-warning text-dark fw-bold btn-sm shadow-sm d-none" onclick="toggleOrderPanel(true)">
+            <i class="bi bi-receipt me-1"></i> Pedido Actual <span id="btnTicketBadge" class="badge bg-dark text-warning ms-1">0</span>
+        </button>
+
+        <a asp-controller="Empleado" asp-action="Historial" class="btn btn-outline-warning text-dark fw-bold btn-sm">
+            <i class="bi bi-clock-history me-1"></i> Historial Ventas
+        </a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="Admin" asp-action="Dashboard" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-speedometer2 me-1"></i> Dashboard
+            </a>
+        }
+    </div>
+</div>
+
+@if (TempData["Exito"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show mb-3 shadow-sm d-flex justify-content-between align-items-center flex-wrap gap-2" role="alert">
+        <div>
+            <i class="bi bi-check-circle-fill me-2 fs-5"></i> @TempData["Exito"]
+        </div>
+        @if (TempData["UltimoPedidoId"] != null)
+        {
+            <div class="d-flex gap-2 ms-auto">
+                <a asp-action="DescargarFacturaPdf" asp-route-id="@TempData["UltimoPedidoId"]" class="btn btn-sm btn-danger fw-bold rounded-pill shadow-sm">
+                    <i class="bi bi-file-earmark-pdf-fill me-1"></i> Factura PDF
+                </a>
+                <a asp-action="DescargarFacturaExcel" asp-route-id="@TempData["UltimoPedidoId"]" class="btn btn-sm btn-success fw-bold rounded-pill shadow-sm">
+                    <i class="bi bi-file-earmark-excel-fill me-1"></i> Factura Excel
+                </a>
+            </div>
+        }
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show mb-3 shadow-sm" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row g-3" id="posMainRow">
+    <!-- Panel Izquierdo: Catálogo de Productos y Filtros -->
+    <div class="col-12 col-lg-7 col-xl-8 transition-all" id="catalogCol">
+        <div class="card border-0 shadow-sm rounded-4 mb-3">
+            <div class="card-body p-3 p-md-4">
+                
+                <!-- Barra de Categorías tipo scroll horizontal -->
+                <div class="d-flex gap-2 overflow-auto pb-2 mb-3 pos-cat-scroll align-items-center">
+                    <button class="btn btn-sm btn-pamelita-primary pos-cat-btn rounded-pill px-3 fw-bold flex-shrink-0" data-cat="all">
+                        <i class="bi bi-grid-fill me-1"></i> Todos
+                    </button>
+                    @foreach (var cat in categorias)
+                    {
+                        <button class="btn btn-sm btn-outline-secondary pos-cat-btn rounded-pill px-3 fw-bold flex-shrink-0" data-cat="@cat.Nombre">
+                            <i class="bi @(cat.Icono ?? "bi-tag") me-1"></i> @cat.Nombre
+                        </button>
+                    }
+                </div>
+
+                <!-- Buscador + Selector de Vista (Tarjetas vs Lista) -->
+                <div class="row g-2 align-items-center mb-3">
+                    <div class="col">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                            <input type="text" id="posSearch" class="form-control border-start-0 ps-0 shadow-none" placeholder="Buscar por nombre de producto..." />
+                            <button class="btn btn-outline-secondary d-none" type="button" id="btnClearSearch" title="Limpiar búsqueda">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                            <button type="button" class="btn-voice" data-voice-for="posSearch" title="Buscar por voz">
+                                <i class="bi bi-mic-fill"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-auto d-flex gap-1 align-items-center">
+                        <small class="text-muted fw-semibold me-1 d-none d-sm-inline" id="posResultsCount">@productos.Count() productos</small>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Modo de vista">
+                            <button type="button" class="btn btn-outline-secondary active" id="btnGridView" title="Vista en Cuadrícula (Tarjetas)">
+                                <i class="bi bi-grid-3x3-gap-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" id="btnListView" title="Vista en Lista Compacta">
+                                <i class="bi bi-list-ul"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VISTA EN CUADRÍCULA (GRID CARDS - TAMAÑO AMPLIADO) -->
+                <div class="row g-3" id="posProductsContainer" style="max-height: 720px; overflow-y: auto;">
+                    @foreach (var p in productos)
+                    {
+                        bool isOutOfStock = p.Stock <= 0;
+                        bool isLowStock = p.Stock > 0 && p.Stock <= 5;
+                        string catName = string.IsNullOrEmpty(p.Category) ? "General" : p.Category;
+                        string imgUrl = string.IsNullOrEmpty(p.ImageUrl) ? "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=400" : p.ImageUrl;
+
+                        <div class="col-12 col-sm-6 col-md-6 col-xl-4 pos-product-item" data-cat="@catName" data-name="@p.Name.ToLower()">
+                            <div class="pos-product-card @(isOutOfStock ? "pos-out-of-stock" : "")"
+                                 id="card-product-@p.Id"
+                                 onclick="handleProductClick(@p.Id, '@p.Name.Replace("'", "\\'")', @p.Price, @p.Stock)">
+                                
+                                <div class="pos-img-wrapper">
+                                    <img src="@imgUrl" class="pos-img" alt="@p.Name" loading="lazy" />
+                                    
+                                    <!-- Categoría Badge -->
+                                    <span class="pos-badge-cat">
+                                        @catName
+                                    </span>
+
+                                    <!-- Stock Badge -->
+                                    @if (isOutOfStock)
+                                    {
+                                        <span class="pos-badge-stock bg-danger text-white">
+                                            <i class="bi bi-x-circle-fill me-1"></i>Agotado
+                                        </span>
+                                    }
+                                    else if (isLowStock)
+                                    {
+                                        <span class="pos-badge-stock bg-warning text-dark">
+                                            <i class="bi bi-exclamation-triangle-fill me-1"></i>¡Quedan @p.Stock!
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="pos-badge-stock bg-success text-white">
+                                            <i class="bi bi-check-circle-fill me-1"></i>@p.Stock disp.
+                                        </span>
+                                    }
+
+                                    <!-- Badge flotante de cantidad agregada al Ticket -->
+                                    <span class="pos-ticket-qty-badge d-none" id="grid-badge-@p.Id">
+                                        <i class="bi bi-cart-check-fill me-1"></i><span class="qty-num">0</span> en pedido
+                                    </span>
+                                </div>
+
+                                <div class="p-3 p-md-4 d-flex flex-column flex-grow-1 justify-content-between">
+                                    <div>
+                                        <h5 class="fw-extrabold text-dark mb-1 text-truncate fs-5" title="@p.Name">@p.Name</h5>
+                                        @if (!string.IsNullOrWhiteSpace(p.Description))
+                                        {
+                                            <p class="text-muted mb-2 text-truncate" style="font-size:0.88rem;" title="@p.Description">@p.Description</p>
+                                        }
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                                        <div>
+                                            <span class="fw-extrabold text-dark fs-4">Bs. @p.Price.ToString("F2")</span>
+                                        </div>
+                                        <button type="button" class="pos-add-btn" title="Agregar a la caja" @(isOutOfStock ? "disabled" : "")>
+                                            <i class="bi bi-plus-lg"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- VISTA EN LISTA COMPACTA (LIST VIEW AMPLIA) -->
+                <div class="d-none" id="posProductsListContainer" style="max-height: 720px; overflow-y: auto;">
+                    <div class="list-group list-group-flush gap-3">
+                        @foreach (var p in productos)
+                        {
+                            bool isOutOfStock = p.Stock <= 0;
+                            bool isLowStock = p.Stock > 0 && p.Stock <= 5;
+                            string catName = string.IsNullOrEmpty(p.Category) ? "General" : p.Category;
+                            string imgUrl = string.IsNullOrEmpty(p.ImageUrl) ? "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=400" : p.ImageUrl;
+
+                            <div class="list-group-item pos-list-item pos-product-item p-3 d-flex align-items-center justify-content-between cursor-pointer"
+                                 data-cat="@catName" data-name="@p.Name.ToLower()"
+                                 onclick="handleProductClick(@p.Id, '@p.Name.Replace("'", "\\'")', @p.Price, @p.Stock)">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="@imgUrl" class="rounded-3 shadow-sm" style="width: 72px; height: 72px; object-fit: cover;" alt="@p.Name" />
+                                    <div>
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <h5 class="fw-bold mb-0 text-dark fs-5">@p.Name</h5>
+                                            <span class="badge bg-light text-dark border fw-semibold" style="font-size:0.75rem;">@catName</span>
+                                            <span class="badge bg-warning text-dark fw-bold d-none" id="list-badge-@p.Id">0 en pedido</span>
+                                        </div>
+                                        <small class="text-muted fs-6">
+                                            @if (isOutOfStock)
+                                            {
+                                                <span class="text-danger fw-bold"><i class="bi bi-x-circle me-1"></i>Agotado</span>
+                                            }
+                                            else if (isLowStock)
+                                            {
+                                                <span class="text-warning fw-bold"><i class="bi bi-exclamation-triangle me-1"></i>Stock bajo (@p.Stock unids)</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-success fw-semibold"><i class="bi bi-box-seam me-1"></i>Stock: @p.Stock unids</span>
+                                            }
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <span class="fw-extrabold text-dark fs-4">Bs. @p.Price.ToString("F2")</span>
+                                    <button type="button" class="btn btn-pamelita-primary rounded-pill px-4 py-2 fw-bold" @(isOutOfStock ? "disabled" : "")>
+                                        <i class="bi bi-plus-lg me-1"></i> Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- ESTADO VACÍO (SIN RESULTADOS DE BÚSQUEDA) -->
+                <div class="text-center py-5 d-none" id="posEmptyState">
+                    <i class="bi bi-search-heart text-muted display-4 mb-2 d-block"></i>
+                    <h5 class="fw-bold text-dark mb-1">No se encontraron productos</h5>
+                    <p class="text-muted small">Intenta con otro término de búsqueda o selecciona otra categoría.</p>
+                    <button type="button" class="btn btn-sm btn-outline-warning text-dark fw-bold rounded-pill px-3 mt-1" onclick="resetFilters()">
+                        <i class="bi bi-arrow-counterclockwise me-1"></i> Restablecer filtros
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel Derecho: Ticket de Pedido Actual -->
+    <div class="col-12 col-lg-5 col-xl-4 transition-all" id="ticketCol">
+        <div class="card border-0 shadow-sm border-top border-4 border-warning sticky-top rounded-4" style="top: 80px;">
+            <div class="card-header bg-white py-3 px-3 d-flex justify-content-between align-items-center border-bottom">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="bg-warning bg-opacity-20 text-dark rounded-circle p-2 d-flex align-items-center justify-content-center" style="width:36px; height:36px;">
+                        <i class="bi bi-receipt fs-5 text-warning"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-0 text-dark">Pedido Actual</h6>
+                        <small class="text-muted" style="font-size:0.75rem;">Resumen de la venta en caja</small>
+                    </div>
+                </div>
+                <div class="d-flex gap-1">
+                    <button type="button" class="btn btn-sm btn-light border px-2 py-1 rounded-circle" onclick="toggleOrderPanel(false)" title="Comprimir pedido">
+                        <i class="bi bi-dash-lg"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-light border text-danger px-2 py-1 rounded-circle" onclick="clearTicket()" title="Vaciar pedido">
+                        <i class="bi bi-trash3"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-body p-3">
+                <form id="posOrderForm" asp-controller="Empleado" asp-action="RegistrarPedido" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small mb-1 text-secondary">
+                            <i class="bi bi-person me-1 text-warning"></i>Cliente / Referencia (Opcional)
+                        </label>
+                        <input type="text" name="nombreCliente" class="form-control form-control-sm rounded-3" placeholder="Ej: Juan Pérez / Mesa 4" />
+                    </div>
+
+                    <!-- Tabla del Ticket -->
+                    <div class="table-responsive mb-3" style="max-height: 260px; overflow-y: auto;">
+                        <table class="table table-sm table-borderless align-middle mb-0" id="ticketTable">
+                            <thead class="table-light rounded-3">
+                                <tr class="text-muted small">
+                                    <th>Producto</th>
+                                    <th class="text-center" style="width: 85px;">Cant.</th>
+                                    <th class="text-end">Subtotal</th>
+                                    <th style="width: 30px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="ticketBody">
+                                <tr id="emptyTicketRow">
+                                    <td colspan="4" class="text-center text-muted py-4">
+                                        <i class="bi bi-cart-x fs-2 text-warning opacity-75 d-block mb-1"></i>
+                                        <span class="small fw-semibold">Selecciona productos del catálogo</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bg-light p-3 rounded-3 mb-3 border">
+                        <div class="d-flex justify-content-between align-items-center mb-1 text-muted small">
+                            <span>Subtotal Items:</span>
+                            <span id="ticketItemCount" class="fw-bold text-dark">0 items</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center fs-5">
+                            <strong class="fw-extrabold text-dark">TOTAL REGISTRADO:</strong>
+                            <strong class="text-success fw-extrabold fs-4" id="ticketTotal">Bs. 0.00</strong>
+                        </div>
+                    </div>
+
+                    <!-- Método de Pago -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small mb-2 text-secondary">
+                            <i class="bi bi-credit-card-2-front me-1 text-warning"></i>Método de Pago
+                        </label>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" name="metodoPago" id="payCash" value="Efectivo" checked />
+                                <label class="btn btn-outline-success w-100 py-2 fw-bold rounded-3 shadow-none d-flex flex-column align-items-center" for="payCash">
+                                    <i class="bi bi-cash-stack fs-4 mb-1"></i>
+                                    <span>Efectivo</span>
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" name="metodoPago" id="payCard" value="Tarjeta" />
+                                <label class="btn btn-outline-primary w-100 py-2 fw-bold rounded-3 shadow-none d-flex flex-column align-items-center" for="payCard">
+                                    <i class="bi bi-credit-card fs-4 mb-1"></i>
+                                    <span>Tarjeta / QR</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btnCompleteOrder" class="btn btn-warning w-100 btn-lg fw-bold text-dark rounded-3 shadow-sm py-2" disabled>
+                        <i class="bi bi-check-circle-fill me-1"></i> Registrar Pedido
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let ticket = {};
+
+        function handleProductClick(id, name, price, stock) {
+            if (stock <= 0) {
+                alert("Este producto está agotado.");
+                return;
+            }
+            
+            // Animación visual de pulso al hacer clic en la tarjeta
+            const card = $('#card-product-' + id);
+            card.addClass('pos-add-pulse');
+            setTimeout(() => card.removeClass('pos-add-pulse'), 350);
+
+            addToTicket(id, name, price, stock);
+        }
+
+        function toggleOrderPanel(isOpen) {
+            if (isOpen) {
+                $('#ticketCol').removeClass('d-none').addClass('d-block');
+                $('#catalogCol').removeClass('col-12').addClass('col-lg-7 col-xl-8');
+                $('#btnOpenOrderPanel').addClass('d-none');
+            } else {
+                $('#ticketCol').removeClass('d-block').addClass('d-none');
+                $('#catalogCol').removeClass('col-lg-7 col-xl-8').addClass('col-12');
+                $('#btnOpenOrderPanel').removeClass('d-none');
+            }
+        }
+
+        function clearTicket() {
+            ticket = {};
+            renderTicket();
+        }
+
+        function addToTicket(id, name, price, stock) {
+            if (ticket[id]) {
+                if (ticket[id].qty >= stock) {
+                    alert("No puedes agregar más del stock disponible (" + stock + " unidades).");
+                    return;
+                }
+                ticket[id].qty++;
+            } else {
+                ticket[id] = { name: name, price: price, qty: 1, stock: stock };
+            }
+            renderTicket();
+        }
+
+        function updateQty(id, delta) {
+            if (ticket[id]) {
+                ticket[id].qty += delta;
+                if (ticket[id].qty > ticket[id].stock) {
+                    ticket[id].qty = ticket[id].stock;
+                    alert("Alcanzaste el límite de stock disponible (" + ticket[id].stock + ").");
+                }
+                if (ticket[id].qty <= 0) {
+                    delete ticket[id];
+                }
+            }
+            renderTicket();
+        }
+
+        function removeFromTicket(id) {
+            delete ticket[id];
+            renderTicket();
+        }
+
+        function renderTicket() {
+            const tbody = $('#ticketBody');
+            tbody.empty();
+            let total = 0;
+            let totalItems = 0;
+            const keys = Object.keys(ticket);
+
+            // Restablecer todos los badges de cantidad en productos
+            $('.pos-ticket-qty-badge').addClass('d-none');
+            $('[id^="list-badge-"]').addClass('d-none').text('0 en pedido');
+
+            if (keys.length === 0) {
+                tbody.append(`
+                    <tr id="emptyTicketRow">
+                        <td colspan="4" class="text-center text-muted py-4">
+                            <i class="bi bi-cart-x fs-2 text-warning opacity-75 d-block mb-1"></i>
+                            <span class="small fw-semibold">Selecciona productos del catálogo</span>
+                        </td>
+                    </tr>
+                `);
+                $('#btnCompleteOrder').prop('disabled', true);
+            } else {
+                $('#btnCompleteOrder').prop('disabled', false);
+                keys.forEach(id => {
+                    const item = ticket[id];
+                    const subtotal = item.price * item.qty;
+                    total += subtotal;
+                    totalItems += item.qty;
+
+                    // Actualizar badge en tarjeta Grid
+                    const gridBadge = $('#grid-badge-' + id);
+                    if (gridBadge.length) {
+                        gridBadge.find('.qty-num').text(item.qty);
+                        gridBadge.removeClass('d-none');
+                    }
+
+                    // Actualizar badge en item de Lista
+                    const listBadge = $('#list-badge-' + id);
+                    if (listBadge.length) {
+                        listBadge.text(item.qty + ' en pedido').removeClass('d-none');
+                    }
+
+                    tbody.append(`
+                        <tr class="border-bottom align-middle">
+                            <td>
+                                <input type="hidden" name="productIds" value="${id}" />
+                                <input type="hidden" name="cantidades" value="${item.qty}" />
+                                <strong class="small d-block text-dark lh-sm">${item.name}</strong>
+                                <small class="text-muted" style="font-size:0.75rem;">Bs. ${item.price.toFixed(2)} c/u</small>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm rounded-pill border overflow-hidden">
+                                    <button type="button" class="btn btn-light px-2 py-0 border-end" onclick="updateQty(${id}, -1)">-</button>
+                                    <span class="btn btn-white disabled px-2 py-0 fw-bold text-dark" style="min-width:24px;">${item.qty}</span>
+                                    <button type="button" class="btn btn-light px-2 py-0 border-start" onclick="updateQty(${id}, 1)">+</button>
+                                </div>
+                            </td>
+                            <td class="text-end fw-bold text-success small">Bs. ${subtotal.toFixed(2)}</td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-sm text-muted text-hover-danger p-0 ms-1" onclick="removeFromTicket(${id})" title="Quitar">
+                                    <i class="bi bi-trash3 fs-6"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+
+            $('#ticketTotal').text('Bs. ' + total.toFixed(2));
+            $('#ticketItemCount').text(totalItems + (totalItems === 1 ? ' producto' : ' productos'));
+            $('#btnTicketBadge').text(totalItems);
+        }
+
+        function resetFilters() {
+            $('#posSearch').val('');
+            $('#btnClearSearch').addClass('d-none');
+            $('.pos-cat-btn[data-cat="all"]').trigger('click');
+        }
+
+        // Eventos de Categoría, Búsqueda y Cambio de Vista
+        $(document).ready(function () {
+
+            // Selector de categoría
+            $('.pos-cat-btn').click(function () {
+                $('.pos-cat-btn').removeClass('btn-pamelita-primary').addClass('btn-outline-secondary');
+                $(this).removeClass('btn-outline-secondary').addClass('btn-pamelita-primary');
+                filterProducts();
+            });
+
+            // Buscador en tiempo real
+            $('#posSearch').on('input keyup', function () {
+                const val = $(this).val();
+                if (val.length > 0) {
+                    $('#btnClearSearch').removeClass('d-none');
+                } else {
+                    $('#btnClearSearch').addClass('d-none');
+                }
+                filterProducts();
+            });
+
+            $('#btnClearSearch').click(function () {
+                $('#posSearch').val('');
+                $(this).addClass('d-none');
+                filterProducts();
+            });
+
+            // Cambio entre Vista Grid y Vista List
+            $('#btnGridView').click(function () {
+                $(this).addClass('active');
+                $('#btnListView').removeClass('active');
+                $('#posProductsContainer').removeClass('d-none');
+                $('#posProductsListContainer').addClass('d-none');
+            });
+
+            $('#btnListView').click(function () {
+                $(this).addClass('active');
+                $('#btnGridView').removeClass('active');
+                $('#posProductsListContainer').removeClass('d-none');
+                $('#posProductsContainer').addClass('d-none');
+            });
+
+            function filterProducts() {
+                const activeCat = $('.pos-cat-btn.btn-pamelita-primary').data('cat');
+                const query = $('#posSearch').val().toLowerCase().trim();
+                let visibleCount = 0;
+
+                $('.pos-product-item').each(function () {
+                    const pCat = $(this).data('cat');
+                    const pName = $(this).data('name');
+
+                    const matchesCat = (activeCat === 'all' || pCat === activeCat);
+                    const matchesQuery = (!query || pName.indexOf(query) > -1);
+
+                    if (matchesCat && matchesQuery) {
+                        $(this).removeClass('d-none').show();
+                        visibleCount++;
+                    } else {
+                        $(this).addClass('d-none').hide();
+                    }
+                });
+
+                // Actualizar contador de resultados visibles (evitando contar duplicados de lista/grid)
+                const realCount = visibleCount / 2; // dado que cada producto existe en Grid y Lista
+                $('#posResultsCount').text(realCount + (realCount === 1 ? ' producto' : ' productos'));
+
+                if (realCount === 0) {
+                    $('#posProductsContainer, #posProductsListContainer').addClass('d-none');
+                    $('#posEmptyState').removeClass('d-none');
+                } else {
+                    $('#posEmptyState').addClass('d-none');
+                    if ($('#btnGridView').hasClass('active')) {
+                        $('#posProductsContainer').removeClass('d-none');
+                    } else {
+                        $('#posProductsListContainer').removeClass('d-none');
+                    }
+                }
+            }
+        });
+    </script>
+}

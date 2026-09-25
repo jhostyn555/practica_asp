@@ -1,0 +1,70 @@
+@model proyecto_asp.Models.Categoria
+
+@{
+    ViewData["Title"] = "Editar Categoría";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-warning text-dark py-3">
+                <h5 class="fw-bold mb-0"><i class="bi bi-pencil me-2"></i>Editar Categoría</h5>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="EditarCategoria" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="mb-3">
+                        <label asp-for="Nombre" class="form-label fw-bold"></label>
+                        <input asp-for="Nombre" class="form-control" />
+                        <span asp-validation-for="Nombre" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Icono" class="form-label fw-bold">
+                            Ícono <small class="text-muted fw-normal">(clase Bootstrap Icons)</small>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="iconPreview">
+                                <i class="bi @(string.IsNullOrEmpty(Model.Icono) ? "bi-tag" : Model.Icono) fs-5" id="iconPreviewIcon"></i>
+                            </span>
+                            <input asp-for="Icono" class="form-control" id="iconoInput" />
+                        </div>
+                        <small class="text-muted">
+                            Busca íconos en <a href="https://icons.getbootstrap.com/" target="_blank">icons.getbootstrap.com</a>
+                        </small>
+                        <span asp-validation-for="Icono" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" asp-for="Activa" id="activaCheck" />
+                            <label class="form-check-label fw-bold" for="activaCheck">Categoría activa (visible en el menú)</label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a asp-action="Categorias" class="btn btn-outline-secondary flex-grow-1 text-center">
+                            <i class="bi bi-x-circle me-1"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-warning fw-bold flex-grow-1">
+                            <i class="bi bi-check-circle me-1"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById('iconoInput').addEventListener('input', function () {
+            const val = this.value.trim();
+            document.getElementById('iconPreviewIcon').className = val ? `bi ${val} fs-5` : 'bi bi-tag fs-5';
+        });
+    </script>
+}

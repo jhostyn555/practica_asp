@@ -1,0 +1,89 @@
+@model IEnumerable<proyecto_asp.Models.Proveedor>
+
+@{
+    ViewData["Title"] = "Gestión de Proveedores";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@if (TempData["Exito"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-2"></i> @TempData["Exito"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">
+        <i class="bi bi-truck text-secondary"></i> Proveedores
+    </h2>
+    <a asp-action="CrearProveedor" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i> Nuevo Proveedor
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <div class="input-group">
+            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+            <input type="text" id="proveedoresSearch" class="form-control admin-search-input" data-target=".searchable-item" placeholder="Buscar por nombre, contacto, teléfono, fecha...">
+            <button type="button" class="btn-voice" data-voice-for="proveedoresSearch" title="Buscar por voz">
+                <i class="bi bi-mic-fill"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="ps-4">#</th>
+                            <th>Nombre</th>
+                            <th>Contacto</th>
+                            <th>Teléfono</th>
+                            <th>Dirección</th>
+                            <th>Registrado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="searchable-item">
+                                <td class="ps-4 text-muted small">@item.Id</td>
+                                <td class="fw-semibold">@item.Nombre</td>
+                                <td>@(item.Contacto ?? "—")</td>
+                                <td>@(item.Telefono ?? "—")</td>
+                                <td>@(item.Direccion ?? "—")</td>
+                                <td class="text-muted small">@item.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">
+                                    <a asp-action="EditarProveedor" asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-outline-primary me-1" title="Editar">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-action="EliminarProveedor" asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <i class="bi bi-truck display-3 text-muted mb-3 d-block"></i>
+                <h5 class="text-muted">No hay proveedores registrados</h5>
+                <p class="text-muted">Añade tu primer proveedor para gestionar tus compras.</p>
+                <a asp-action="CrearProveedor" class="btn btn-primary mt-2">
+                    <i class="bi bi-plus-circle me-1"></i> Nuevo Proveedor
+                </a>
+            </div>
+        }
+    </div>
+</div>

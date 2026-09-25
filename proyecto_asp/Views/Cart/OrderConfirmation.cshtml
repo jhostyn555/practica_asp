@@ -1,0 +1,39 @@
+@model proyecto_asp.Models.Pedido
+
+@{
+    ViewData["Title"] = "Pedido Confirmado";
+}
+
+<div class="container my-5 text-center">
+    <div class="card shadow border-0 mx-auto" style="max-width: 600px;">
+        <div class="card-body p-5">
+            <i class="bi bi-check-circle-fill text-success display-1 mb-3"></i>
+            <h2 class="fw-bold text-dark">¡Pedido Registrado con Éxito!</h2>
+            <p class="lead text-muted mb-4">Gracias por tu compra. Tu pedido ha sido recibido y está siendo procesado.</p>
+            
+            <div class="bg-light p-4 rounded mb-4 text-start">
+                <h5 class="fw-bold border-bottom pb-2 mb-3">Detalles del Pedido #@Model.Id</h5>
+                <p class="mb-1"><strong>Fecha:</strong> @Model.FechaPedido.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</p>
+                <p class="mb-1"><strong>Método de Pago:</strong> @Model.MetodoPago</p>
+                <p class="mb-3"><strong>Estado:</strong> <span class="badge bg-warning text-dark">@Model.Estado</span></p>
+                
+                <h6 class="fw-bold mt-4">Productos:</h6>
+                <ul class="list-unstyled">
+                    @foreach(var detalle in Model.Detalles)
+                    {
+                        <li class="d-flex justify-content-between border-bottom py-2">
+                            <span>@detalle.Cantidad x @detalle.Product.Name</span>
+                            <span>Bs. @((detalle.Cantidad * detalle.PrecioUnitario).ToString("F2"))</span>
+                        </li>
+                    }
+                </ul>
+                <div class="d-flex justify-content-between mt-3">
+                    <strong class="fs-5">Total Pagado:</strong>
+                    <strong class="fs-5 text-success">Bs. @Model.Total.ToString("F2")</strong>
+                </div>
+            </div>
+            
+            <a asp-controller="Products" asp-action="Index" class="btn btn-pamelita-primary">Volver al Inicio</a>
+        </div>
+    </div>
+</div>

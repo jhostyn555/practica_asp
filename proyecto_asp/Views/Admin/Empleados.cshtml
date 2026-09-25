@@ -1,0 +1,105 @@
+@model IEnumerable<proyecto_asp.Models.Empleado>
+
+@{
+    ViewData["Title"] = "Gestión de Empleados";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@if (TempData["Exito"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-2"></i> @TempData["Exito"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">
+        <i class="bi bi-people text-primary"></i> Gestión de Empleados
+    </h2>
+    <div class="d-flex gap-2">
+        <a asp-controller="Empleado" asp-action="Index" class="btn btn-warning text-dark fw-bold">
+            <i class="bi bi-cash-coin me-1"></i> Ir al POS Pedidos
+        </a>
+        <a asp-action="CrearEmpleado" class="btn btn-primary">
+            <i class="bi bi-person-plus me-1"></i> Nuevo Empleado
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <div class="input-group">
+            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+            <input type="text" id="empleadosSearch" class="form-control admin-search-input" data-target=".searchable-item" placeholder="Buscar por nombre, email, cargo, teléfono...">
+            <button type="button" class="btn-voice" data-voice-for="empleadosSearch" title="Buscar por voz">
+                <i class="bi bi-mic-fill"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="ps-4">#</th>
+                            <th>Nombre Completo</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Cargo</th>
+                            <th class="text-center">Estado</th>
+                            <th>Contratación</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var emp in Model)
+                        {
+                            <tr class="searchable-item">
+                                <td class="ps-4 text-muted small">@emp.Id</td>
+                                <td class="fw-semibold">@emp.Nombre</td>
+                                <td>@emp.Email</td>
+                                <td>@(emp.Telefono ?? "—")</td>
+                                <td><span class="badge bg-info text-dark">@emp.Cargo</span></td>
+                                <td class="text-center">
+                                    @if (emp.Activo)
+                                    {
+                                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Inactivo</span>
+                                    }
+                                </td>
+                                <td class="text-muted small">@emp.FechaContratacion.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">
+                                    <a asp-action="EditarEmpleado" asp-route-id="@emp.Id"
+                                       class="btn btn-sm btn-outline-primary me-1" title="Editar">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-action="EliminarEmpleado" asp-route-id="@emp.Id"
+                                       class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <i class="bi bi-people display-3 text-muted mb-3 d-block"></i>
+                <h5 class="text-muted">No hay empleados registrados</h5>
+                <p class="text-muted small">Registra empleados para permitirles acceder al sistema POS de toma de pedidos.</p>
+                <a asp-action="CrearEmpleado" class="btn btn-primary mt-2">
+                    <i class="bi bi-person-plus me-1"></i> Registrar Primer Empleado
+                </a>
+            </div>
+        }
+    </div>
+</div>
