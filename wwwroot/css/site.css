@@ -172,7 +172,7 @@ main {
     transform: translateY(-2px);
 }
 
-/* Hero Section */
+/* Hero Section (legado, puede usarse en otras páginas) */
 .hero-pamelita {
     background: var(--brand-hero-gradient);
     border-radius: var(--radius-xl);
@@ -194,6 +194,70 @@ main {
     background: radial-gradient(circle, rgba(255, 183, 3, 0.25) 0%, rgba(255, 107, 0, 0) 70%);
     pointer-events: none;
 }
+
+/* Hero Video Fullscreen */
+.hero-video-section {
+    position: relative;
+    width: 100vw;
+    height: calc(100vh - 56px); /* resta la altura del navbar */
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    margin-top: -1.5rem; /* compensa el my-4 del container */
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-video-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: 0;
+}
+
+.hero-video-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(30, 15, 5, 0.72) 0%, rgba(100, 40, 0, 0.55) 100%);
+    z-index: 1;
+}
+
+.hero-video-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 2rem 1.5rem;
+    max-width: 780px;
+}
+
+.hero-video-content .hero-title {
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    text-shadow: 0 3px 15px rgba(0,0,0,0.6);
+}
+
+.hero-video-content .hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: #FFD166;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    max-width: 620px;
+    margin: 1rem auto 0;
+}
+
+.hero-highlight-video {
+    color: #FF9B21;
+    text-shadow: 0 0 30px rgba(255, 107, 0, 0.5);
+}
+
+
 
 .hero-title {
     font-size: 2.8rem;
@@ -249,6 +313,7 @@ main {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top;
     transition: transform 0.5s ease;
 }
 
@@ -535,4 +600,279 @@ main {
     background: #fffdf9;
     border-color: #ffd166;
     box-shadow: 0 6px 16px rgba(255, 107, 0, 0.1);
+}
+
+/* =============================================
+   STICKY BAR DE CATEGORÍAS (PRODUCTOS)
+   ============================================= */
+.productos-sticky-bar {
+    position: sticky;
+    top: 56px; /* altura del navbar */
+    z-index: 100;
+    background: rgba(255, 251, 244, 0.96);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid #FFE5B4;
+    border-bottom: 2px solid #FFE5B4;
+    padding: 0.75rem 0;
+    box-shadow: 0 4px 16px rgba(255, 107, 0, 0.08);
+    transition: box-shadow 0.3s ease;
+}
+
+.productos-sticky-bar.is-stuck {
+    box-shadow: 0 6px 24px rgba(255, 107, 0, 0.15);
+}
+
+/* =============================================
+   FOOTER MODERNO
+   ============================================= */
+.footer-pamelita {
+    background: linear-gradient(160deg, #1a0e06 0%, #2e1a0c 60%, #3d2310 100%);
+    color: #D4C5B8;
+}
+
+.footer-brand {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #FFB703;
+    letter-spacing: -0.5px;
+}
+
+.footer-desc {
+    font-size: 0.92rem;
+    color: #A9937E;
+    line-height: 1.7;
+}
+
+.footer-heading {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #FFB703;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.footer-links a {
+    color: #B0998C;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #FF9B21;
+    padding-left: 4px;
+}
+
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.footer-contact li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+    color: #B0998C;
+}
+
+.footer-contact li a {
+    color: #B0998C;
+    text-decoration: none;
+}
+
+.footer-contact li a:hover {
+    color: #FF9B21;
+}
+
+.footer-social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1.5px solid rgba(255, 183, 3, 0.3);
+    color: #FFB703;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.footer-social:hover {
+    background: var(--brand-gradient);
+    border-color: transparent;
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(255, 107, 0, 0.35);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 183, 3, 0.15);
+    padding: 1rem 0;
+    color: #7A6558;
+    font-size: 0.85rem;
+}
+
+.footer-made {
+    color: #7A6558;
+}
+
+/* =============================================
+   WEB SPEECH API - BOTÓN DE BÚSQUEDA POR VOZ
+   ============================================= */
+.btn-voice {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFF3E0;
+    border: 1.5px solid #FFD166;
+    color: var(--brand-orange);
+    border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+    padding: 0 0.85rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.btn-voice:hover {
+    background: var(--brand-gradient);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(255, 107, 0, 0.3);
+}
+
+/* Estado: escuchando (pulso animado) */
+.btn-voice--listening {
+    background: #D62828 !important;
+    border-color: #D62828 !important;
+    color: #fff !important;
+    animation: voicePulse 1.2s ease-in-out infinite;
+}
+
+.btn-voice--listening i::before {
+    content: "\F4C2"; /* bi-stop-circle */
+}
+
+@keyframes voicePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(214, 40, 40, 0.5); }
+    50%       { box-shadow: 0 0 0 8px rgba(214, 40, 40, 0); }
+}
+
+/* Adaptación cuando el input-group NO tiene border-end-0 (paneles admin) */
+.input-group .btn-voice {
+    border-left: none;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+/* Si va seguido de otro botón (como el botón Buscar), no redondear a la derecha */
+.input-group .btn-voice:not(:last-child) {
+    border-radius: 0 !important;
+    border-right: 1px solid #FFE5B4;
+}
+
+/* Pill variant (buscadores del menú público) */
+.input-group-pill .btn-voice {
+    border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+}
+
+.input-group-pill .btn-voice:not(:last-child) {
+    border-radius: 0 !important;
+}
+
+/* Notificación flotante de estado de voz (escuchando / errores) */
+.voice-feedback-toast {
+    margin-top: 6px;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    animation: fadeInToast 0.25s ease-out;
+}
+
+.voice-feedback-listening {
+    background-color: #FFF3E0;
+    color: var(--brand-orange-dark);
+    border: 1px solid #FFD166;
+}
+
+.voice-feedback-error {
+    background-color: #FFF0F0;
+    color: #D62828;
+    border: 1px solid #FFC2C2;
+}
+
+.voice-feedback-success {
+    background-color: #F0FFF4;
+    color: #2D6A4F;
+    border: 1px solid #B7E4C7;
+}
+
+@keyframes fadeInToast {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =============================================
+   IMAGE HOVER EFFECT - QUIÉNES SOMOS
+   ============================================= */
+.image-hover-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.35s ease;
+}
+
+.image-hover-wrapper:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.image-hover-wrapper .img-original,
+.image-hover-wrapper .img-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.image-hover-wrapper .img-original {
+    opacity: 1;
+    z-index: 2;
+    transform: scale(1);
+}
+
+.image-hover-wrapper .img-hover {
+    opacity: 0;
+    z-index: 1;
+    transform: scale(1.05);
+}
+
+.image-hover-wrapper:hover .img-original {
+    opacity: 0;
+    transform: scale(1.05);
+}
+
+.image-hover-wrapper:hover .img-hover {
+    opacity: 1;
+    transform: scale(1);
 }

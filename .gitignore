@@ -8,6 +8,5 @@ obj/
 .vs/
 *.user
 *.suo
-
 # Claves de compilación y certificados
 *.pfx

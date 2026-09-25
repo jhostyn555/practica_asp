@@ -75,9 +75,12 @@
                     <i class="bi bi-receipt text-primary me-2"></i>Últimas Ventas
                 </h5>
                 <div class="d-flex gap-2 align-items-center">
-                    <div class="input-group input-group-sm" style="width: 250px;">
+                    <div class="input-group input-group-sm" style="width: 290px;">
                         <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control admin-search-input" data-target=".searchable-item" placeholder="Buscar venta...">
+                        <input type="text" id="dashboardSearch" class="form-control admin-search-input" data-target=".searchable-item" placeholder="Buscar venta...">
+                        <button type="button" class="btn-voice" data-voice-for="dashboardSearch" title="Buscar por voz">
+                            <i class="bi bi-mic-fill"></i>
+                        </button>
                     </div>
                     <a asp-action="HistorialCompras" class="btn btn-sm btn-outline-primary">
                         Ver todo <i class="bi bi-arrow-right ms-1"></i>

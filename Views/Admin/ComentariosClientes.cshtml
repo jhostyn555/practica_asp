@@ -23,7 +23,10 @@ else
 {
     <div class="input-group mb-4">
         <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
-        <input type="text" class="form-control admin-search-input" data-target=".searchable-item" placeholder="Buscar por nombre, comentario, fecha...">
+        <input type="text" id="comentariosSearch" class="form-control admin-search-input" data-target=".searchable-item" placeholder="Buscar por nombre, comentario, fecha...">
+        <button type="button" class="btn-voice" data-voice-for="comentariosSearch" title="Buscar por voz">
+            <i class="bi bi-mic-fill"></i>
+        </button>
     </div>
 
     <div class="d-flex flex-column gap-3">

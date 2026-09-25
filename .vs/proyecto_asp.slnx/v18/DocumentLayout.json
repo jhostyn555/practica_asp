@@ -1,18 +1,45 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\",
+  "WorkspaceRootPath": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{9FAF0355-1F9D-DDF0-AAB9-1D3C62623FA0}|proyecto_asp\\proyecto_asp.csproj|d:\\users\\vargas\\source\\repos\\desarrollo de sistemas i\\proyecto_asp\\proyecto_asp\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9FAF0355-1F9D-DDF0-AAB9-1D3C62623FA0}|proyecto_asp\\proyecto_asp.csproj|solutionrelative:proyecto_asp\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FAF0355-1F9D-DDF0-AAB9-1D3C62623FA0}|proyecto_asp\\proyecto_asp.csproj|d:\\users\\vargas\\source\\repos\\desarrollo de sistemas i\\proyecto_asp\\proyecto_asp\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9FAF0355-1F9D-DDF0-AAB9-1D3C62623FA0}|proyecto_asp\\proyecto_asp.csproj|solutionrelative:proyecto_asp\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FAF0355-1F9D-DDF0-AAB9-1D3C62623FA0}|proyecto_asp\\proyecto_asp.csproj|d:\\users\\vargas\\source\\repos\\desarrollo de sistemas i\\proyecto_asp\\proyecto_asp\\views\\products\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9FAF0355-1F9D-DDF0-AAB9-1D3C62623FA0}|proyecto_asp\\proyecto_asp.csproj|solutionrelative:proyecto_asp\\views\\products\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FAF0355-1F9D-DDF0-AAB9-1D3C62623FA0}|proyecto_asp\\proyecto_asp.csproj|d:\\users\\vargas\\source\\repos\\desarrollo de sistemas i\\proyecto_asp\\proyecto_asp\\views\\products\\categoria.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9FAF0355-1F9D-DDF0-AAB9-1D3C62623FA0}|proyecto_asp\\proyecto_asp.csproj|solutionrelative:proyecto_asp\\views\\products\\categoria.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FAF0355-1F9D-DDF0-AAB9-1D3C62623FA0}|proyecto_asp\\proyecto_asp.csproj|d:\\users\\vargas\\source\\repos\\desarrollo de sistemas i\\proyecto_asp\\proyecto_asp\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9FAF0355-1F9D-DDF0-AAB9-1D3C62623FA0}|proyecto_asp\\proyecto_asp.csproj|solutionrelative:proyecto_asp\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FAF0355-1F9D-DDF0-AAB9-1D3C62623FA0}|proyecto_asp\\proyecto_asp.csproj|d:\\users\\vargas\\source\\repos\\desarrollo de sistemas i\\proyecto_asp\\proyecto_asp\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9FAF0355-1F9D-DDF0-AAB9-1D3C62623FA0}|proyecto_asp\\proyecto_asp.csproj|solutionrelative:proyecto_asp\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\PAGINAS WEB\\proyecto_asp\\Controllers\\ProductsController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Controllers\\AdminController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Controllers\\AdminController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\Controllers\\AccountController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Controllers\\AccountController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Controllers\\AccountController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Controllers\\AccountController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\Controllers\\AdminController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Controllers\\AdminController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +49,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -33,43 +60,146 @@
               "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:2:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_AdminLayout.cshtml",
+              "DocumentMoniker": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeDocumentMoniker": "proyecto_asp\\Views\\Shared\\_AdminLayout.cshtml",
+              "ToolTip": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeToolTip": "proyecto_asp\\Views\\Shared\\_AdminLayout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAALwAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-09-25T21:08:03.029Z",
+              "EditorCaption": ""
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "AccountController.cs",
-              "DocumentMoniker": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Controllers\\AccountController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
-              "ToolTip": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Controllers\\AccountController.cs",
-              "RelativeToolTip": "Controllers\\AccountController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-17T06:33:54.744Z",
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Views\\Products\\Index.cshtml",
+              "RelativeDocumentMoniker": "proyecto_asp\\Views\\Products\\Index.cshtml",
+              "ToolTip": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Views\\Products\\Index.cshtml",
+              "RelativeToolTip": "proyecto_asp\\Views\\Products\\Index.cshtml",
+              "ViewState": "AgIAAG4BAAAAAAAAAAAAALsBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-09-25T21:00:48.755Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "AdminController.cs",
-              "DocumentMoniker": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Controllers\\AdminController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AdminController.cs",
-              "ToolTip": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Controllers\\AdminController.cs",
-              "RelativeToolTip": "Controllers\\AdminController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-17T06:33:47.221Z",
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "proyecto_asp\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "proyecto_asp\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAACgBAAAAAAAAAAAAACgBAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-09-25T17:17:54.751Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAFoAAAAAAAAAAAAkwHMAAAABAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "proyecto_asp\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "proyecto_asp\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-17T06:25:11.205Z",
+              "WhenOpened": "2026-09-24T20:49:20.065Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ProductsController.cs",
+              "DocumentMoniker": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Controllers\\ProductsController.cs",
+              "RelativeDocumentMoniker": "proyecto_asp\\Controllers\\ProductsController.cs",
+              "ToolTip": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Controllers\\ProductsController.cs",
+              "RelativeToolTip": "proyecto_asp\\Controllers\\ProductsController.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAjwB0AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-24T20:31:36.855Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Categoria.cshtml",
+              "DocumentMoniker": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Views\\Products\\Categoria.cshtml",
+              "RelativeDocumentMoniker": "proyecto_asp\\Views\\Products\\Categoria.cshtml",
+              "ToolTip": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\proyecto_asp\\Views\\Products\\Categoria.cshtml",
+              "RelativeToolTip": "proyecto_asp\\Views\\Products\\Categoria.cshtml",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAAAJUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-09-24T20:07:42.993Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-17T06:33:54.744Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AdminController.cs",
+              "DocumentMoniker": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\Controllers\\AdminController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AdminController.cs",
+              "ToolTip": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\Controllers\\AdminController.cs",
+              "RelativeToolTip": "Controllers\\AdminController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-17T06:33:47.221Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\Users\\Vargas\\source\\repos\\DESARROLLO DE SISTEMAS I\\proyecto_asp\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAkwHMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-17T06:25:11.205Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ProductsController.cs",
+              "DocumentMoniker": "D:\\PAGINAS WEB\\proyecto_asp\\Controllers\\ProductsController.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\PAGINAS WEB\\proyecto_asp\\Controllers\\ProductsController.cs",
+              "ToolTip": "D:\\PAGINAS WEB\\proyecto_asp\\Controllers\\ProductsController.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\PAGINAS WEB\\proyecto_asp\\Controllers\\ProductsController.cs",
+              "ViewState": "AgIAAH4AAAAAAAAAAAAAAI4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-24T20:32:22.881Z"
             }
           ]
         }

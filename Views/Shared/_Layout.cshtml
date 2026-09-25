@@ -14,7 +14,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="manifest" href="~/manifest.json" />
-    <meta name="theme-color" content="#ff6600" />
+    <meta name="theme-color" content="#FF6B00" />
+    
+    <!-- Apple PWA Support -->
+    <link rel="apple-touch-icon" href="~/icons/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="~/icons/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="~/icons/icon-512.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Pamelita" />
 </head>
 <body>
     <header class="sticky-top">
@@ -117,19 +125,88 @@
         </main>
     </div>
 
-    <footer class="footer-pamelita">
-        <div class="container text-center">
-            <div class="row align-items-center">
-                <div class="col-md-6 text-md-start mb-3 mb-md-0">
-                    <h5 class="fw-bold text-warning mb-1">🥟 Empanadas Pamelita</h5>
-                    <p class="small text-white-50 mb-0">Las mejores empanadas artesanales con masa crujiente y relleno jugoso.</p>
+    <footer class="footer-pamelita mt-auto">
+        <div class="container py-5">
+            <div class="row g-4">
+
+                <!-- Marca -->
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="footer-brand mb-3">🥟 Empanadas Pamelita</h5>
+                    <p class="footer-desc mb-4">
+                        Las mejores empanadas artesanales con masa crujiente y relleno jugoso. Tradición y sabor en cada mordisco.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="footer-social" title="Facebook" aria-label="Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="footer-social" title="Instagram" aria-label="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" class="footer-social" title="TikTok" aria-label="TikTok">
+                            <i class="bi bi-tiktok"></i>
+                        </a>
+                        <a href="#" class="footer-social" title="WhatsApp" aria-label="WhatsApp">
+                            <i class="bi bi-whatsapp"></i>
+                        </a>
+                    </div>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <p class="small mb-0">&copy; 2026 - Empanadas Pamelita. Todos los derechos reservados.</p>
+
+                <!-- Links rápidos -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6 class="footer-heading mb-3">Menú</h6>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="@Url.Action("Index", "Products")">Inicio</a></li>
+                        <li><a href="@Url.Action("Index", "Products")#menu-seccion">Nuestras Empanadas</a></li>
+                        <li><a href="@Url.Action("Index", "Products")#ventajas">¿Por qué elegirnos?</a></li>
+                        <li><a href="@Url.Action("Index", "Products")#quienes-somos">Quiénes Somos</a></li>
+                    </ul>
                 </div>
+
+                <!-- Mi cuenta -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6 class="footer-heading mb-3">Mi Cuenta</h6>
+                    <ul class="list-unstyled footer-links">
+                        <li><a asp-controller="Cart" asp-action="Index">Mi Carrito</a></li>
+                        <li><a asp-controller="Account" asp-action="Login">Iniciar Sesión</a></li>
+                        <li><a asp-controller="Account" asp-action="Register">Registrarse</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contacto -->
+                <div class="col-lg-4 col-md-6">
+                    <h6 class="footer-heading mb-3">Contáctanos</h6>
+                    <ul class="list-unstyled footer-contact">
+                        <li>
+                            <i class="bi bi-geo-alt-fill text-warning me-2"></i>
+                            <span>Bolivia, Santa Cruz de la Sierra</span>
+                        </li>
+                        <li>
+                            <i class="bi bi-whatsapp text-success me-2"></i>
+                            <a href="https://wa.me/59170000000" target="_blank">+591 70 000 000</a>
+                        </li>
+                        <li>
+                            <i class="bi bi-clock-fill text-warning me-2"></i>
+                            <span>Lun–Vie: 8:00 – 20:00 · Sáb–Dom: 9:00 – 18:00</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Barra inferior -->
+        <div class="footer-bottom">
+            <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <p class="mb-0 small">
+                    &copy; 2026 <strong>Empanadas Pamelita</strong>. Todos los derechos reservados.
+                </p>
+                <p class="mb-0 small footer-made">
+                    Hecho con <i class="bi bi-heart-fill text-danger mx-1"></i> en Bolivia 🇧🇴
+                </p>
             </div>
         </div>
     </footer>
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -148,16 +225,42 @@
             });
         });
 
-        // Registro del Service Worker
+        // Registro del Service Worker con detección de actualizaciones
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
                     .then(registration => {
                         console.log('SW registrado con éxito:', registration);
+                        
+                        // Verificar actualizaciones cada vez que se carga la página
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            if (newWorker) {
+                                newWorker.addEventListener('statechange', () => {
+                                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                        // Nueva versión disponible, forzar actualización
+                                        console.log('Nueva versión del SW disponible, actualizando...');
+                                        newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                        window.location.reload();
+                                    }
+                                });
+                            }
+                        });
+                        
+                        // Verificar actualizaciones periódicamente
+                        setInterval(() => registration.update(), 60000);
                     })
                     .catch(error => {
                         console.log('Error registrando el SW:', error);
                     });
+            });
+            
+            // Escuchar cuando el SW toma control (después de SKIP_WAITING)
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (refreshing) return;
+                refreshing = true;
+                window.location.reload();
             });
         }
 

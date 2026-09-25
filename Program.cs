@@ -3,6 +3,7 @@ using proyecto_asp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.HttpOverrides;
+using SkiaSharp;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +56,9 @@ builder.Services.AddControllersWithViews()
 
 var app = builder.Build();
 
+// Generar iconos PWA con tamaños correctos al iniciar
+GeneratePwaIcons(app.Environment.WebRootPath);
+
 // Soporte para Render (Proxy Inverso para la redirección HTTPS de Google)
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
@@ -68,7 +72,26 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        // CORS para PWA
+        ctx.Context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
+        
+        // MIME types correctos para PWA
+        var path = ctx.Context.Request.Path.Value?.ToLowerInvariant();
+        if (path?.EndsWith(".webmanifest") == true || path?.EndsWith("manifest.json") == true)
+        {
+            ctx.Context.Response.ContentType = "application/manifest+json";
+        }
+        else if (path?.EndsWith(".js") == true && path.Contains("sw.js"))
+        {
+            ctx.Context.Response.ContentType = "application/javascript";
+            ctx.Context.Response.Headers.Append("Service-Worker-Allowed", "/");
+        }
+    }
+});
 
 app.UseRouting();
 
@@ -150,3 +173,48 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
+void GeneratePwaIcons(string webRootPath)
+{
+    try
+    {
+        var iconsDir = Path.Combine(webRootPath, "icons");
+        var sourcePath = Path.Combine(iconsDir, "icon-192.png"); // Usar el original como base
+        var icon192Path = Path.Combine(iconsDir, "icon-192.png");
+        var icon512Path = Path.Combine(iconsDir, "icon-512.png");
+
+        if (!File.Exists(sourcePath))
+        {
+            Console.WriteLine($"[PWA Icons] No se encontró imagen base en {sourcePath}");
+            return;
+        }
+
+        using var original = SKBitmap.Decode(sourcePath);
+        if (original == null)
+        {
+            Console.WriteLine("[PWA Icons] No se pudo decodificar la imagen base");
+            return;
+        }
+
+        // Generar icon-192.png (192x192)
+        ResizeAndSave(original, icon192Path, 192, 192);
+        
+        // Generar icon-512.png (512x512)
+        ResizeAndSave(original, icon512Path, 512, 512);
+
+        Console.WriteLine("[PWA Icons] Iconos generados correctamente: 192x192 y 512x512");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[PWA Icons] Error generando iconos: {ex.Message}");
+    }
+}
+
+void ResizeAndSave(SKBitmap source, string destPath, int width, int height)
+{
+    using var resized = source.Resize(new SKImageInfo(width, height), SKFilterQuality.High);
+    using var image = SKImage.FromBitmap(resized);
+    using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+    using var stream = File.OpenWrite(destPath);
+    data.SaveTo(stream);
+}

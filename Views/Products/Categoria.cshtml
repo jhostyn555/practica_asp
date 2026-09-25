@@ -24,10 +24,14 @@
 
     @* Buscador en su propia línea completa debajo del título *@
     <div class="mb-4">
-        <form method="get" asp-action="Categoria" asp-route-nombre="@catNombre" class="w-100">
+        <form method="get" asp-action="Categoria" class="w-100">
+            <input type="hidden" name="nombre" value="@catNombre" />
             <div class="input-group shadow-sm">
                 <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-warning"></i></span>
-                <input type="text" name="searchQuery" value="@ViewBag.SearchQuery" class="form-control border-start-0 ps-0" placeholder="Buscar productos en @catNombre..." />
+                <input type="text" name="searchQuery" id="buscadorCategoria" value="@ViewBag.SearchQuery" class="form-control border-start-0 ps-0" placeholder="Buscar productos en @catNombre..." />
+                <button type="button" class="btn-voice" data-voice-for="buscadorCategoria" title="Buscar por voz">
+                    <i class="bi bi-mic-fill"></i>
+                </button>
                 <button type="submit" class="btn btn-warning fw-bold px-4">Buscar</button>
             </div>
         </form>

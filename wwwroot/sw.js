@@ -1,10 +1,11 @@
-const CACHE_NAME = 'pamelita-cache-v2';
+const CACHE_NAME = 'pamelita-cache-v6';
 
 const urlsToCache = [
     '/css/site.css',
     '/js/site.js',
-    '/favicon.ico',
-    '/manifest.json'
+    '/manifest.json',
+    '/icons/icon-192.png',
+    '/icons/icon-512.png'
 ];
 
 self.addEventListener('install', event => {
@@ -46,4 +47,11 @@ self.addEventListener('fetch', event => {
             return fetch(request).catch(() => { });
         })
     );
+});
+
+// Permitir que la app force actualización del SW
+self.addEventListener('message', event => {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
 });

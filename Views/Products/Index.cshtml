@@ -4,27 +4,28 @@
     ViewData["Title"] = "Inicio";
 }
 
-<!-- Hero Banner Pamelita -->
-<div class="hero-pamelita">
-    <div class="row align-items-center">
-        <div class="col-lg-8">
-            <span class="badge bg-warning text-dark fw-bold px-3 py-2 rounded-pill mb-3">
-                <i class="bi bi-star-fill text-danger me-1"></i> Tradición & Sabor Único
-            </span>
-            <h1 class="hero-title">
-                Las Verdaderas <span class="hero-highlight">Empanadas Pamelita</span>
-            </h1>
-            <p class="hero-subtitle">
-                Doraditas, crujientes y con el relleno más jugoso. Preparadas diariamente con ingredientes seleccionados y amor artesanal.
-            </p>
-            <div class="d-flex gap-2 flex-wrap">
-                <a href="#menu-seccion" class="btn btn-pamelita-primary btn-lg">
-                    <i class="bi bi-cart-plus me-2"></i> Hacer Pedido
-                </a>
-            </div>
-        </div>
+<!-- Hero Video Fullscreen -->
+<section class="hero-video-section">
+    <video class="hero-video-bg" autoplay muted loop playsinline>
+        <source src="~/video/video_de_empanadas.webm" type="video/webm">
+    </video>
+    <div class="hero-video-overlay"></div>
+    <div class="hero-video-content">
+        <span class="badge bg-warning text-dark fw-bold px-3 py-2 rounded-pill mb-4 d-inline-block">
+            <i class="bi bi-star-fill text-danger me-1"></i> Tradición &amp; Sabor Único
+        </span>
+        <h1 class="hero-title">
+            Las Verdaderas <span class="hero-highlight-video">Empanadas Pamelita</span>
+        </h1>
+        <p class="hero-subtitle">
+            Doraditas, crujientes y con el relleno más jugoso. Preparadas diariamente con ingredientes seleccionados y amor artesanal.
+        </p>
+        <a href="#menu-seccion" class="btn btn-pamelita-primary btn-lg mt-2">
+            <i class="bi bi-cart-plus me-2"></i> Hacer Pedido
+        </a>
     </div>
-</div>
+</section>
+
 
 <!-- ¿Por qué elegirnos? -->
 <section class="py-5 bg-light" id="ventajas">
@@ -61,7 +62,10 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-6 mb-4 mb-md-0">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqeRI8zlTKDklZVzKVtX_cokqYE2Jp39kZMIn-_tITuA&s=10" class="img-fluid rounded shadow" alt="Nuestra Historia" />
+                <div class="image-hover-wrapper">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqeRI8zlTKDklZVzKVtX_cokqYE2Jp39kZMIn-_tITuA&s=10" class="img-fluid rounded shadow img-original" alt="Nuestra Historia" />
+                    <img src="https://eldia.com.do/wp-content/uploads/2024/12/pastelitos-Venezolanos-carne-scaled-1.webp" class="img-fluid rounded shadow img-hover" alt="Empanadas Venezolanas" />
+                </div>
             </div>
             <div class="col-md-6">
                 <h2 class="fw-bold text-dark mb-3">Quiénes Somos</h2>
@@ -91,52 +95,63 @@
             }
         </div>
 
-        @* Buscador en su propia línea completa debajo del título *@
-        <div class="mb-4">
-            <div class="mb-4">
-                <div class="input-group shadow-sm">
-                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-warning"></i></span>
-                    <input type="text" id="buscadorProductos"
-                           class="form-control border-start-0 ps-0"
-                           placeholder="Buscar producto por nombre o ingrediente..." />
-                </div>
+        @* Buscador *@
+        <div class="mb-3">
+            <div class="input-group shadow-sm">
+                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-warning"></i></span>
+                <input type="text" id="buscadorProductos"
+                       class="form-control border-start-0 ps-0 admin-search-input"
+                       data-target=".producto-item"
+                       placeholder="Buscar producto por nombre o ingrediente..." />
+                <button type="button" class="btn-voice" data-voice-for="buscadorProductos" title="Buscar por voz">
+                    <i class="bi bi-mic-fill"></i>
+                </button>
+                <button type="button" id="btnBuscarProductos" class="btn btn-warning fw-bold px-4 text-dark">
+                    <i class="bi bi-search me-1"></i> Buscar
+                </button>
             </div>
         </div>
+    </div>
 
-        @* Botones de filtro dinámicos por categoría *@
-        <div class="d-flex flex-wrap gap-2 mb-4">
-            <a href="@Url.Action("Index", "Products")#menu-seccion"
-               class="btn btn-sm @(string.IsNullOrEmpty(ViewBag.Categoria as string) ? "btn-pamelita-primary" : "btn-outline-secondary") rounded-pill">
-                <i class="bi bi-grid me-1"></i> Todos
-            </a>
-            @if (ViewBag.Categorias != null)
-            {
-                foreach (var cat in ViewBag.Categorias)
+    @* Sticky bar de categorías *@
+    <div class="productos-sticky-bar" id="productosBar">
+        <div class="container">
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+                <a href="@Url.Action("Index", "Products")#menu-seccion"
+                   class="btn btn-sm @(string.IsNullOrEmpty(ViewBag.Categoria as string) ? "btn-pamelita-primary" : "btn-outline-secondary") rounded-pill">
+                    <i class="bi bi-grid me-1"></i> Todos
+                </a>
+                @if (ViewBag.Categorias != null)
                 {
-                    string catNombre = cat.Nombre;
-                    string catIcono = cat.Icono ?? "bi-tag";
-                    bool isActive = (ViewBag.Categoria as string) == catNombre;
-                    <a href="@Url.Action("Categoria", "Products", new { nombre = catNombre })"
-                       class="btn btn-sm @(isActive ? "btn-pamelita-primary" : "btn-outline-secondary") rounded-pill">
-                        <i class="bi @catIcono me-1"></i> @catNombre
-                    </a>
+                    foreach (var cat in ViewBag.Categorias)
+                    {
+                        string catNombre = cat.Nombre;
+                        string catIcono = cat.Icono ?? "bi-tag";
+                        bool isActive = (ViewBag.Categoria as string) == catNombre;
+                        <a href="@Url.Action("Categoria", "Products", new { nombre = catNombre })"
+                           class="btn btn-sm @(isActive ? "btn-pamelita-primary" : "btn-outline-secondary") rounded-pill">
+                            <i class="bi @catIcono me-1"></i> @catNombre
+                        </a>
+                    }
                 }
-            }
+            </div>
         </div>
+    </div>
 
+    <div class="container mt-4">
         <div class="row g-4">
             @if (Model != null && Model.Any())
             {
-                foreach (var product in Model.Take(3))
+                foreach (var product in Model)
                 {
-                    <div class="col-12 col-md-6 col-lg-4">
+                    <div class="col-12 col-md-6 col-lg-4 producto-item">
                         <div class="product-card">
                             <div class="product-img-wrapper">
-                                <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600" : product.ImageUrl)" 
-                                     class="product-img" 
-                                     alt="@product.Name" 
+                                <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600" : product.ImageUrl)"
+                                     class="product-img"
+                                     alt="@product.Name"
                                      onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600';" />
-                                
+
                                 <span class="category-badge">
                                     @(string.IsNullOrEmpty(product.Category) ? "Empanada" : product.Category)
                                 </span>
@@ -322,6 +337,17 @@
     </div>
 </section>
 
+<!-- Contacto Rapido -->
+<section class="py-5 text-white my-4 shadow-sm" id="contacto" style="background: linear-gradient(135deg, #2B1E16 0%, #42281D 50%, #6E3B1B 100%); border-radius: var(--radius-xl);">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-2 text-warning">¿Tienes alguna duda o pedido especial?</h2>
+        <p class="mb-4 text-white-50">Contáctanos fácilmente para pedidos grandes o información personalizada.</p>
+        <a href="@Url.Action("Index", "Contacto")" class="btn btn-pamelita-primary btn-lg">
+            <i class="bi bi-envelope me-2"></i> Ir a Contacto
+        </a>
+    </div>
+</section>
+
 @section Scripts {
     <script>
         const stars = document.querySelectorAll('.star-btn');
@@ -352,14 +378,14 @@
         $(document).ready(function () {
             $('.add-to-cart-form').submit(function (e) {
                 e.preventDefault(); // Evitar recarga completa
-                
+
                 var form = $(this);
                 var btn = form.find('button[type="submit"]');
                 var originalHtml = btn.html();
-                
+
                 // Mostrar estado de "cargando"
                 btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>').prop('disabled', true);
-                
+
                 $.ajax({
                     type: 'POST',
                     url: form.attr('action'),
@@ -372,18 +398,18 @@
                             if (badge.css('display') === 'none') {
                                 badge.show();
                             }
-                            
+
                             // Efecto de rebote para llamar la atención sobre el carrito
                             badge.addClass('animate__animated animate__bounceIn');
-                            setTimeout(function(){ badge.removeClass('animate__animated animate__bounceIn'); }, 1000);
+                            setTimeout(function () { badge.removeClass('animate__animated animate__bounceIn'); }, 1000);
                         }
-                        
+
                         // Mostrar "Listo" temporalmente
-                        btn.removeClass('btn-pamelita-primary').addClass('btn-success').html('<i class="bi bi-check-lg"></i> Listo');
-                        
-                        setTimeout(function() {
+                        btn.removeClass('btn-pamelita-primary').addClass('btn-warning').html('<i class="bi bi-check-lg"></i> Listo');
+
+                        setTimeout(function () {
                             // Restaurar botón original
-                            btn.removeClass('btn-success').addClass('btn-pamelita-primary').html(originalHtml).prop('disabled', false);
+                            btn.removeClass('btn-warning').addClass('btn-pamelita-primary').html(originalHtml).prop('disabled', false);
                         }, 1500);
                     },
                     error: function () {
@@ -394,16 +420,24 @@
                 });
             });
         });
+
+        // Detectar cuando la sticky bar está pegada para aplicar sombra extra
+        (function () {
+            const bar = document.getElementById('productosBar');
+            if (!bar) return;
+            const observer = new IntersectionObserver(
+                ([entry]) => {
+                    bar.classList.toggle('is-stuck', !entry.isIntersecting);
+                },
+                { threshold: 1, rootMargin: '-56px 0px 0px 0px' }
+            );
+            // Sentinel invisible justo antes de la barra
+            const sentinel = document.createElement('div');
+            sentinel.style.height = '1px';
+            bar.parentElement.insertBefore(sentinel, bar);
+            observer.observe(sentinel);
+        })();
     </script>
 }
 
-<!-- Contacto Rapido -->
-<section class="py-5 bg-dark text-white" id="contacto">
-    <div class="container text-center">
-        <h2 class="fw-bold mb-4">¿Tienes alguna duda o pedido especial?</h2>
-        <p class="mb-4">Contáctanos fácilmente para pedidos grandes o información.</p>
-        <a href="@Url.Action("Index", "Contacto")" class="btn btn-warning btn-lg fw-bold text-dark">
-            <i class="bi bi-envelope me-2"></i> Ir a Contacto
-        </a>
-    </div>
-</section>
+

@@ -26,7 +26,10 @@
     <div class="card-header bg-white py-3">
         <div class="input-group">
             <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
-            <input type="text" class="form-control admin-search-input" data-target=".searchable-item" placeholder="Buscar por nombre, contacto, teléfono, fecha...">
+            <input type="text" id="proveedoresSearch" class="form-control admin-search-input" data-target=".searchable-item" placeholder="Buscar por nombre, contacto, teléfono, fecha...">
+            <button type="button" class="btn-voice" data-voice-for="proveedoresSearch" title="Buscar por voz">
+                <i class="bi bi-mic-fill"></i>
+            </button>
         </div>
     </div>
     <div class="card-body p-0">
