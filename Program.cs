@@ -24,12 +24,15 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     .AddDefaultTokenProviders();
 
 // Integración de inicio de sesión externo con Google para Identity
-builder.Services.AddAuthentication()
-    .AddGoogle(options =>
+if (!string.IsNullOrWhiteSpace(builder.Configuration["Authentication:Google:ClientId"]) &&
+    !string.IsNullOrWhiteSpace(builder.Configuration["Authentication:Google:ClientSecret"]))
+{
+    builder.Services.AddAuthentication().AddGoogle(options =>
     {
         options.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
         options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
     });
+}
 
 // Configuración de Cookies
 builder.Services.ConfigureApplicationCookie(options =>
@@ -104,6 +107,7 @@ app.MapControllerRoute(
     pattern: "{controller=Products}/{action=Index}/{id?}");
 
 // Inicialización de la base de datos, Migraciones, Roles y Usuario Admin
+if (!string.IsNullOrWhiteSpace(builder.Configuration.GetConnectionString("DefaultConnection")))
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -132,11 +136,11 @@ using (var scope = app.Services.CreateScope())
 
         // 2. Datos del nuevo Administrador
         string adminEmail = "admin@pamelita.com";
-        string adminPassword = "Admin123456*";
+        string? adminPassword = builder.Configuration["Admin:Password"];
 
         var user = await userManager.FindByEmailAsync(adminEmail);
 
-        if (user == null)
+        if (user == null && !string.IsNullOrWhiteSpace(adminPassword))
         {
             user = new ApplicationUser
             {
